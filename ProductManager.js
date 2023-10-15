@@ -26,14 +26,17 @@ class ProductManager {
 
     addProduct({title, description, price, thumbnail, stock}){
         const code = ProductManager.#siguienteId()
-        
         const product = new Product({title, description, price, thumbnail, code, stock})
-        const find = this.#products.find(p => p.code === code)
-        if (!find){
+        const findCode = this.#products.find(p => p.code === code)
+        if ((!findCode)){
             this.#products.push(product)
         }
         else{
             throw new Error("Repeated code")
+        }
+        if (!title || !description || !price || !thumbnail || !stock) {
+            console.log('Error: Todos los campos son obligatorios');
+            return;
         }
         return product
     }
