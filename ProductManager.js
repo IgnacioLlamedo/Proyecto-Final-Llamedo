@@ -25,20 +25,22 @@ class ProductManager {
     }
 
     addProduct({title, description, price, thumbnail, stock}){
-        const code = ProductManager.#siguienteId()
-        const product = new Product({title, description, price, thumbnail, code, stock})
-        const findCode = this.#products.find(p => p.code === code)
-        if ((!findCode)){
-            this.#products.push(product)
-        }
-        else{
-            throw new Error("Repeated code")
-        }
         if (!title || !description || !price || !thumbnail || !stock) {
             console.log('Error: Todos los campos son obligatorios');
             return;
         }
-        return product
+        else{
+            const code = ProductManager.#siguienteId()
+            const product = new Product({title, description, price, thumbnail, code, stock})
+            const findCode = this.#products.find(p => p.code === code)
+            if ((!findCode)){
+                this.#products.push(product)
+            }
+            else{
+                throw new Error("Repeated code")
+            }
+            return product
+        }
     }
 
     getProducts(){
@@ -56,7 +58,7 @@ class ProductManager {
 
 const pm = new ProductManager()
 
-const p1 = pm.addProduct({ title: "t1", description: "d1", price: 100, thumbnail: "img", stock: 10 })
+const p1 = pm.addProduct({  })
 const p2 = pm.addProduct({ title: "t2", description: "d2", price: 100, thumbnail: "img", stock: 10 })
 const p3 = pm.addProduct({ title: "t3", description: "d3", price: 100, thumbnail: "img", stock: 10 })
 const p4 = pm.addProduct({ title: "t4", description: "d4", price: 100, thumbnail: "img", stock: 10 })
