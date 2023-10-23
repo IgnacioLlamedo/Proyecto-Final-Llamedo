@@ -1,11 +1,13 @@
+const { promises: fs } = require('fs')
+
 class Product {
 
     constructor({ title, description, price, thumbnail, code, stock }){
+        this.code = code
         this.title = title
         this.description = description
         this.price = price
         this.thumbnail = thumbnail
-        this.code = code
         this.stock = stock
     }
 
@@ -13,28 +15,77 @@ class Product {
 }
 
 class ProductManager {
-    static #ultimoId = 0
     #products
 
-    constructor(){
+    constructor({ path }){
+        this.path = path
         this.#products = []
     }
 
-    static #siguienteId(){
-        return ++ProductManager.#ultimoId
+    #nextId(){
+        if (this.#products.length > 0) {
+            return this.#products[this.#products.length - 1].code + 1
+          } else {
+            return 1
+          }
     }
 
-    addProduct({title, description, price, thumbnail, stock}){
+    async reset(){
+        this.#products = []
+        await this.#writeProducts()
+    }
+
+    async #writeProducts(){
+        const productsJson = JSON.stringify(this.#products, null, 2)
+        await fs.writeFile(this.path, productsJson)
+    }
+
+    async #readProducts(){
+        const productsInJson = await fs.readFile(this.path, 'utf-8')
+        const dataProducts = JSON.parse(productsInJson)
+        this.#products = dataProducts.map(j => new Product(j))
+    }
+
+    async updateProducts(code, productData){
+        await this.#readProducts()
+        const i = this.#products.findIndex(p => p.code === code)
+        if(this.#products[i]){
+            const newProd = new Product({code, ...this.#products[i], ...productData})
+            this.#products[i] = newProd
+            await this.#writeProducts()
+            return newProd
+        }
+        else{
+            throw new Error('No se puede actualizar, producto no encontrado')
+        } 
+    }
+
+    async deleteProduct(code){
+        await this.#readProducts()
+        const i = this.#products.findIndex(p => p.code === code)
+        if(this.#products[i]){
+            const newArray = this.#products.splice(i, 1)
+            await this.#writeProducts()
+            return newArray[0]
+        }
+        else{
+            throw new Error('No se puede borrar, producto no encontrado')
+        }
+    }
+
+    async addProduct({title, description, price, thumbnail, stock}){
         if (!title || !description || !price || !thumbnail || !stock) {
             console.log('Error: Todos los campos son obligatorios');
             return;
         }
         else{
-            const code = ProductManager.#siguienteId()
-            const product = new Product({title, description, price, thumbnail, code, stock})
+            await this.#readProducts()
+            const code = this.#nextId()
+            const product = new Product({code, title, description, price, thumbnail, stock})
             const findCode = this.#products.find(p => p.code === code)
             if ((!findCode)){
                 this.#products.push(product)
+                await this.#writeProducts()
             }
             else{
                 throw new Error("Repeated code")
@@ -43,7 +94,8 @@ class ProductManager {
         }
     }
 
-    getProducts(){
+    async getProducts(){
+        await this.#readProducts()
         return this.#products
     }
 
@@ -56,14 +108,23 @@ class ProductManager {
     }
 }
 
-const pm = new ProductManager()
+async function main(){
 
-const p1 = pm.addProduct({  })
-const p2 = pm.addProduct({ title: "t2", description: "d2", price: 100, thumbnail: "img", stock: 10 })
-const p3 = pm.addProduct({ title: "t3", description: "d3", price: 100, thumbnail: "img", stock: 10 })
-const p4 = pm.addProduct({ title: "t4", description: "d4", price: 100, thumbnail: "img", stock: 10 })
+    const pm = new ProductManager({ path: 'products.json' })
 
-console.log("Listado de productos: ")
-console.log(pm.getProducts())
-console.log("Producto por id: ")
-console.log(pm.getProductById(3))
+    pm.reset()
+
+    await pm.addProduct({  })
+    await pm.addProduct({ title: "t2", description: "d2", price: 100, thumbnail: "img", stock: 10 })
+    await pm.addProduct({ title: "t3", description: "d3", price: 100, thumbnail: "img", stock: 10 })
+    await pm.addProduct({ title: "t4", description: "d4", price: 100, thumbnail: "img", stock: 10 })
+    await pm.deleteProduct(2)
+    await pm.updateProducts(1, { title: 'New Title' })
+
+    console.log("Listado de productos: ")
+    console.log(await pm.getProducts())
+    console.log("Producto por id: ")
+    console.log(await pm.getProductById(3))
+}
+
+main()

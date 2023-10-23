@@ -1,0 +1,18 @@
+[
+  {
+    "code": 1,
+    "title": "New Title",
+    "description": "d2",
+    "price": 100,
+    "thumbnail": "img",
+    "stock": 10
+  },
+  {
+    "code": 3,
+    "title": "t4",
+    "description": "d4",
+    "price": 100,
+    "thumbnail": "img",
+    "stock": 10
+  }
+]
