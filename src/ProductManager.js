@@ -1,4 +1,4 @@
-const { promises: fs } = require('fs')
+import fs from 'fs/promises'
 
 class Product {
 
@@ -14,10 +14,10 @@ class Product {
     
 }
 
-class ProductManager {
+export class ProductManager {
     #products
 
-    constructor({ path }){
+    constructor( path ){
         this.path = path
         this.#products = []
     }
@@ -94,7 +94,7 @@ class ProductManager {
         }
     }
 
-    async getProducts(){
+    async getProductsArray(){
         await this.#readProducts()
         return this.#products
     }
@@ -106,9 +106,29 @@ class ProductManager {
         } 
         return find
     }
+
+    async getProductsJSON(limit){
+        const json = await fs.readFile(this.path, "utf-8")
+        const data = JSON.parse(json)
+        if (limit){
+            if (isNaN(limit)){
+                throw new Error("NaN")
+            }
+            return data.slice(0, limit)
+        }
+        return data
+    }
+
+    async getProductByIdJSON(id){
+        const json = await fs.readFile(this.path, 'utf-8')
+        const products = JSON.parse(json)
+        const productById = products.find(p => p.code === parseInt(id))
+        if (!productById) throw new Error(`Product ${id} Not Found`)
+        return productById
+    }
 }
 
-async function main(){
+/* async function main(){
 
     const pm = new ProductManager({ path: 'products.json' })
 
@@ -127,4 +147,4 @@ async function main(){
     console.log(await pm.getProductById(3))
 }
 
-main()
+main() */
