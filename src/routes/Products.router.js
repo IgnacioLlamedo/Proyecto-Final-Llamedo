@@ -17,10 +17,10 @@ productsRouter.get('/', async (req, res) => {
     }
 })
 
-productsRouter.get('/products/:id', async (req, res) => {
-    const id = req.params.id
+productsRouter.get('/:pid', async (req, res) => {
+    const {pid} = req.params
     try{
-        const product = await pm.getProductByIdJSON(id)
+        const product = await pm.getProductByIdJSON(pid)
         res.json(product)
     }
     catch (error){
@@ -33,7 +33,7 @@ productsRouter.get('/products/:id', async (req, res) => {
 
 productsRouter.post('/', async (req, res) => {
     try {
-        const { tittle, description, code, price, status, stock, category, thumbnails } = req.body
+        const { tittle, description, code, price, status = true, stock, category, thumbnails } = req.body
         const response = await pm.addProductJSON({ tittle, description, code, price, status, stock, category, thumbnails })
         res.json(response)
     }

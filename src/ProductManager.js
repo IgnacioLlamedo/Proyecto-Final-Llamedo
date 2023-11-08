@@ -127,7 +127,7 @@ export class ProductManager {
     async getProductByIdJSON(id){
         const json = await fs.readFile(this.path, 'utf-8')
         const products = JSON.parse(json)
-        const productById = products.find(p => p.code === parseInt(id))
+        const productById = products.find(p => p.id === id)
         if (!productById) throw new Error(`Product ${id} Not Found`)
         return productById
     }
