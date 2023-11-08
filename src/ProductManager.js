@@ -1,14 +1,18 @@
 import fs from 'fs/promises'
+import { v4 as uuidv4 } from 'uuid'
 
 class Product {
 
-    constructor({ title, description, price, thumbnail, code, stock }){
-        this.code = code
+    constructor({ id, title, description, code, price, status, stock, category, thumbnails }){
+        this.id = id
         this.title = title
         this.description = description
+        this.code = code
         this.price = price
-        this.thumbnail = thumbnail
+        this.status = status
         this.stock = stock
+        this.category = category
+        this.thumbnails = thumbnails
     }
 
     
@@ -20,14 +24,6 @@ export class ProductManager {
     constructor( path ){
         this.path = path
         this.#products = []
-    }
-
-    #nextId(){
-        if (this.#products.length > 0) {
-            return this.#products[this.#products.length - 1].code + 1
-          } else {
-            return 1
-          }
     }
 
     async reset(){
@@ -46,11 +42,11 @@ export class ProductManager {
         this.#products = dataProducts.map(j => new Product(j))
     }
 
-    async updateProducts(code, productData){
+    async updateProductsArray(id, productData){
         await this.#readProducts()
-        const i = this.#products.findIndex(p => p.code === code)
+        const i = this.#products.findIndex(p => p.id === id)
         if(this.#products[i]){
-            const newProd = new Product({code, ...this.#products[i], ...productData})
+            const newProd = new Product({id, ...this.#products[i], ...productData})
             this.#products[i] = newProd
             await this.#writeProducts()
             return newProd
@@ -60,9 +56,9 @@ export class ProductManager {
         } 
     }
 
-    async deleteProduct(code){
+    async deleteProductArray(id){
         await this.#readProducts()
-        const i = this.#products.findIndex(p => p.code === code)
+        const i = this.#products.findIndex(p => p.id === id)
         if(this.#products[i]){
             const newArray = this.#products.splice(i, 1)
             await this.#writeProducts()
@@ -73,17 +69,17 @@ export class ProductManager {
         }
     }
 
-    async addProduct({title, description, price, thumbnail, stock}){
-        if (!title || !description || !price || !thumbnail || !stock) {
+    async addProductArray({title, description, price, thumbnail, stock, status, category}){
+        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
             console.log('Error: Todos los campos son obligatorios');
             return;
         }
         else{
             await this.#readProducts()
-            const code = this.#nextId()
-            const product = new Product({code, title, description, price, thumbnail, stock})
-            const findCode = this.#products.find(p => p.code === code)
-            if ((!findCode)){
+            const id = uuidv4()
+            const product = new Product({id, title, description, price, thumbnail, stock, status, category})
+            const findId = this.#products.find(p => p.id === id)
+            if ((!findId)){
                 this.#products.push(product)
                 await this.#writeProducts()
             }
@@ -99,12 +95,21 @@ export class ProductManager {
         return this.#products
     }
 
-    getProductById(code){
+    getProductByIdArray(code){
         const find = this.#products.find(p => p.code === code)
         if (!find){
             throw new Error("Not found")
         } 
         return find
+    }
+
+    addProductJSON = async ({ tittle, description, code, price, status, stock, category, thumbnails }) => {
+        const id = uuidv4()
+        const newProduct = { id, tittle, description, code, price, status, stock, category, thumbnails }
+        this.#products = await this.getProductsJSON()
+        this.#products.push(newProduct)
+        await fs.writeFile(this.path, JSON.stringify(this.#products))
+        return newProduct
     }
 
     async getProductsJSON(limit){
@@ -126,25 +131,29 @@ export class ProductManager {
         if (!productById) throw new Error(`Product ${id} Not Found`)
         return productById
     }
+
+    updateProductJSON = async (id, {...data}) => {
+        const response = await this.getProductsJSON()
+        const i = response.findIndex(p => p.id === id)
+        if (i !== -1) {
+            response[i] = {id, ...data}
+            await fs.writeFile(this.path, JSON.stringify(response))
+            return response[i]
+        }
+        else {
+            throw new Error('Product Not Found')
+        }
+    }
+
+    deleteProductJSON = async (id) => {
+        const response = await this.getProductsJSON()
+        const i = response.findIndex(p => p.id === id)
+        if (i !== -1) {
+            response.splice(i, 1)
+            await fs.writeFile(this.path, JSON.stringify(response))
+        }
+        else {
+            throw new Error('Product Not Found')
+        }
+    }
 }
-
-/* async function main(){
-
-    const pm = new ProductManager({ path: 'products.json' })
-
-    pm.reset()
-
-    await pm.addProduct({  })
-    await pm.addProduct({ title: "t2", description: "d2", price: 100, thumbnail: "img", stock: 10 })
-    await pm.addProduct({ title: "t3", description: "d3", price: 100, thumbnail: "img", stock: 10 })
-    await pm.addProduct({ title: "t4", description: "d4", price: 100, thumbnail: "img", stock: 10 })
-    await pm.deleteProduct(2)
-    await pm.updateProducts(1, { title: 'New Title' })
-
-    console.log("Listado de productos: ")
-    console.log(await pm.getProducts())
-    console.log("Producto por id: ")
-    console.log(await pm.getProductById(3))
-}
-
-main() */

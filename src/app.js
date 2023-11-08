@@ -1,37 +1,18 @@
-import { PRODUCTS_JSON, PORT } from "./config.js"
+import { PRODUCTS_JSON, CARTS_JSON, PORT } from "./config.js"
 import express from 'express'
 import { ProductManager } from './ProductManager.js'
+import { CartManager } from './CartManager.js'
+import { productsRouter } from './routes/products.router.js'
+import { cartsRouter } from './routes/carts.router.js'
 
-const pm = new ProductManager(PRODUCTS_JSON)
 const app = express()
 
-app.get('/products', async (req, res) => {
-    const limit = parseInt(String(req.query.limit))
-    try {
-        const products = await pm.getProductsJSON(limit)
-        res.json(products)
-    }
-    catch(error){
-        res.json({
-            status: "error",
-            message: error.message
-        })
-    }
-})
+export const pm = new ProductManager(PRODUCTS_JSON)
+export const cm = new CartManager(CARTS_JSON)
 
-app.get('/products/:id', async (req, res) => {
-    const id = req.params.id
-    try{
-        const product = await pm.getProductByIdJSON(id)
-        res.json(product)
-    }
-    catch (error){
-        res.json({
-            status: "error",
-            message: error.message
-        })
-    }
-})
+app.use(express.json())
+app.use('/api/products', productsRouter)
+app.use('/api/carts', cartsRouter)
 
 app.listen(PORT, () => {
     console.log(`conectado y escuchando en puerto ${PORT}`)
