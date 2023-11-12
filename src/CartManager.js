@@ -1,5 +1,8 @@
 import { promises as fs } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
+import { ProductManager } from './ProductManager.js'
+
+const pm = ProductManager
 
 export class CartManager {
 
@@ -34,20 +37,27 @@ export class CartManager {
         return newCart
     }
 
-    addProductToCart = async (cartId, productId) => {
+    addProductToCart = async (cartId, id) => {
         const response = await this.getCarts()
         const i = response.findIndex(cart => cart.id === cartId)
         if (i !== -1) {
-            const cartProducts = await this.getCartProducts(cartId)
-            const productIndex = cartProducts.findIndex(product => product.productId === productId)
-            if (productIndex !== -1) {
-                cartProducts[productIndex].quantity = cartProducts[productIndex].quantity + 1
+            const productList = await pm.getProductsJSON()
+            const listIndex = productList.findIndex(product => product.id === id)
+            if (listIndex !== -1){
+                const cartProducts = await this.getCartProducts(cartId)
+                const productIndex = cartProducts.findIndex(product => product.id === id)
+                if (productIndex !== -1) {
+                    cartProducts[productIndex].quantity = cartProducts[productIndex].quantity + 1
+                }
+                else {
+                    cartProducts.push({ productId, quantity : 1 })
+                }
+                response[i].products = cartProducts
+                await fs.writeFile(this.path, JSON.stringify(response))
             }
             else {
-                cartProducts.push({ productId, quantity : 1 })
+                throw new Error('Product Not Found')
             }
-            response[i].products = cartProducts
-            await fs.writeFile(this.path, JSON.stringify(response))
         }
         else {
             throw new Error('Cart Not Found')
