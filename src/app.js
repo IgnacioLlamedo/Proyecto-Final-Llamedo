@@ -15,5 +15,5 @@ app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 
 app.listen(PORT, () => {
-    console.log(`conectado y escuchando en puerto ${PORT}`)
+    console.log(`Listening in port ${PORT}`)
 })

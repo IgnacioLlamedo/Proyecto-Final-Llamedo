@@ -52,7 +52,7 @@ export class ProductManager {
             return newProd
         }
         else{
-            throw new Error('No se puede actualizar, producto no encontrado')
+            throw new Error('Product Not Found')
         } 
     }
 
@@ -65,13 +65,13 @@ export class ProductManager {
             return newArray[0]
         }
         else{
-            throw new Error('No se puede borrar, producto no encontrado')
+            throw new Error('Product Not Found')
         }
     }
 
     async addProductArray({title, description, price, thumbnail, stock, status, category}){
         if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
-            console.log('Error: Todos los campos son obligatorios');
+            console.log('Error: All fields are necessary');
             return;
         }
         else{
@@ -98,7 +98,7 @@ export class ProductManager {
     getProductByIdArray(code){
         const find = this.#products.find(p => p.code === code)
         if (!find){
-            throw new Error("Not found")
+            throw new Error("Product Not found")
         } 
         return find
     }
@@ -133,16 +133,23 @@ export class ProductManager {
     }
 
     updateProductJSON = async (id, {...data}) => {
-        const response = await this.getProductsJSON()
-        const i = response.findIndex(p => p.id === id)
-        if (i !== -1) {
-            response[i] = {id, ...data}
-            await fs.writeFile(this.path, JSON.stringify(response))
-            return response[i]
+        if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
+            console.log('Error: All fields are necessary');
+            return;
         }
         else {
-            throw new Error('Product Not Found')
+            const response = await this.getProductsJSON()
+            const i = response.findIndex(p => p.id === id)
+            if (i !== -1) {
+                response[i] = {id, ...data}
+                await fs.writeFile(this.path, JSON.stringify(response))
+                return response[i]
+            }
+            else {
+                throw new Error(`Product ${id} Not Found`)
+            }
         }
+    
     }
 
     deleteProductJSON = async (id) => {
@@ -153,7 +160,7 @@ export class ProductManager {
             await fs.writeFile(this.path, JSON.stringify(response))
         }
         else {
-            throw new Error('Product Not Found')
+            throw new Error(`Product ${id} Not Found`)
         }
     }
 }
