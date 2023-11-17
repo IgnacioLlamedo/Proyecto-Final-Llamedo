@@ -33,8 +33,8 @@ productsRouter.get('/:pid', async (req, res) => {
 
 productsRouter.post('/', async (req, res) => {
     try {
-        const { tittle, description, code, price, status = true, stock, category, thumbnails } = req.body
-        const response = await pm.addProductJSON({ tittle, description, code, price, status, stock, category, thumbnails })
+        const { title, description, code, price, status = true, stock, category, thumbnails } = req.body
+        const response = await pm.addProductJSON({ title, description, code, price, status, stock, category, thumbnails })
         res.json(response)
     }
     catch (error) {
@@ -48,8 +48,8 @@ productsRouter.post('/', async (req, res) => {
 productsRouter.put('/:pid', async (req, res) => {
     try {
         const id = req.params.pid
-        const { tittle, description, code, price, status = true, stock, category, thumbnails } = req.body
-        const response = await pm.updateProductJSON(id, { tittle, description, code, price, status, stock, category, thumbnails })
+        const { title, description, code, price, status = true, stock, category, thumbnails } = req.body
+        const response = await pm.updateProductJSON(id, { title, description, code, price, status, stock, category, thumbnails })
         res.json(response)
     }
     catch (error) {

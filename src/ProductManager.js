@@ -70,9 +70,8 @@ export class ProductManager {
     }
 
     async addProductArray({title, description, price, thumbnail, stock, status, category}){
-        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
-            console.log('Error: All fields are necessary');
-            return;
+        if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
+            throw new Error('All fields are necessary')
         }
         else{
             await this.#readProducts()
@@ -103,13 +102,18 @@ export class ProductManager {
         return find
     }
 
-    addProductJSON = async ({ tittle, description, code, price, status, stock, category, thumbnails }) => {
-        const id = uuidv4()
-        const newProduct = { id, tittle, description, code, price, status, stock, category, thumbnails }
-        this.#products = await this.getProductsJSON()
-        this.#products.push(newProduct)
-        await fs.writeFile(this.path, JSON.stringify(this.#products))
-        return newProduct
+    addProductJSON = async ({ title, description, code, price, status, stock, category, thumbnails }) => {
+        if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
+            throw new Error('All fields are necessary')
+        }
+        else {
+            const id = uuidv4()
+            const newProduct = { id, title, description, code, price, status, stock, category, thumbnails }
+            this.#products = await this.getProductsJSON()
+            this.#products.push(newProduct)
+            await fs.writeFile(this.path, JSON.stringify(this.#products))
+            return newProduct
+        }
     }
 
     async getProductsJSON(limit){
@@ -134,8 +138,7 @@ export class ProductManager {
 
     updateProductJSON = async (id, {...data}) => {
         if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
-            console.log('Error: All fields are necessary');
-            return;
+            throw new Error('All fields are necessary')
         }
         else {
             const response = await this.getProductsJSON()
