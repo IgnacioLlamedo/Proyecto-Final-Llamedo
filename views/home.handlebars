@@ -4,14 +4,14 @@
 {{#each products}}
 <div>
     <p>Product "{{this.title}}"</p>
-    <li>Id : {{this.id}}</li>
+    <img src={{this.thumbnail}}>
+    <li>Id : {{this._id}}</li>
     <li>Description : {{this.description}}</li>
     <li>Code : {{this.code}}</li>
     <li>Price : {{this.price}}</li>
     <li>Status : {{this.status}}</li>
     <li>Stock : {{this.stock}}</li>
     <li>Category : {{this.category}}</li>
-    <li>Thumbnails : {{this.thumbnails}}</li>
 </div>
 {{/each}}
 </ul>
