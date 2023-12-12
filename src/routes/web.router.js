@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { pm } from "../app.js";
 
 export const webRouter = Router()
 
@@ -13,6 +12,3 @@ webRouter.get('/', async (req, res) => {
     })
 })
 
-webRouter.get('/realtimeproducts', async (req, res) => {
-    res.render('realTimeProducts', {title: 'Real Time Products', style: 'realTimeProducts.css'})
-})
