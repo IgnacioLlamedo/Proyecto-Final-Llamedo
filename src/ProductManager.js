@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import { dbProducts } from "./models/ProductMongoose.js"
+import { isGeneratorFunction } from "util/types"
 
 class ProductManager {
     
@@ -13,7 +14,15 @@ class ProductManager {
         return await dbProducts.find().lean()
     }
 
-    async findById(id, newData) {
+    async findById(id) {
+        const search = await dbProducts.findById(id).lean()
+        if (!search) {
+            throw new Error('Product Not Found')
+            return search
+        }
+    }
+
+    async update(id, newData) {
         const updated = await dbProducts.findByIdAndUpdate(id, { $set: newData }, { new: true }).lean()
         if (!updated) {
             throw new Error('Product Not Found')
@@ -21,12 +30,20 @@ class ProductManager {
         return updated
     }
 
-    async deleteById(id) {
+    async delete(id) {
         const deleted = await dbProducts.findByIdAndDelete(id).lean()
         if (!deleted) {
             throw new Error('Product Not Found')
         }
         return deleted
+    }
+
+    async findByCategory(category) {
+        const search = await dbProducts.findMany({ category: category }).lean()
+        if(!search) {
+            throw new Error('Category Not Found')
+        }
+        return search
     }
 }
 

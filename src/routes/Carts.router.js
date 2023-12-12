@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { cm } from "../app.js";
+import { cm } from "../CartManager.js"
 
-const cartsRouter = Router()
+export const cartsRouter = Router()
 
 cartsRouter.post('/', async (req, res) => {
     try {
-        const response = await cm.newCart()
-        res.json(response)
+        
     }
     catch (error) {
         res.json({
@@ -17,10 +16,8 @@ cartsRouter.post('/', async (req, res) => {
 })
 
 cartsRouter.get('/:cid', async (req, res) => {
-    const {cid} = req.params
     try {
-        const response = await cm.getCartProducts(cid)
-        res.json(response)
+        
     }
     catch (error) {
         res.json({
@@ -31,10 +28,8 @@ cartsRouter.get('/:cid', async (req, res) => {
 })
 
 cartsRouter.post('/:cid/products/:pid', async (req, res) => {
-    const {cid, pid} = req.params
     try {
-        await cm.addProductToCart(cid, pid)
-        res.send('Product added')
+        
     }
     catch (error) {
         res.json({
@@ -43,5 +38,3 @@ cartsRouter.post('/:cid/products/:pid', async (req, res) => {
         }) 
     }
 })
-
-export {cartsRouter}
