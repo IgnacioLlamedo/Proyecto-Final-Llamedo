@@ -18,15 +18,15 @@ app.listen(PORT, () => {
 
 /* await cm.createCart() */
 
-console.log(await cm.findAll())
+/* console.log(await cm.findAll()) */
 
 /* await pm.createProduct({
-    title: 'a',
-    description: 'b',
-    code:'c',
-    price: 1,
-    stock: 2,
-    category: 'd'
+    title: 'q',
+    description: 'w',
+    code:'e',
+    price: 5,
+    stock: 5,
+    category: 'r'
 }) */
 
 console.log(await pm.findAll())

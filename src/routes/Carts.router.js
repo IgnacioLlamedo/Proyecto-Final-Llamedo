@@ -19,7 +19,7 @@ cartsRouter.post('/', async (req, res) => {
 
 cartsRouter.get('/:cid', async (req, res) => {
     try {
-        const search = await dbCarts.findById(req.params.cid).populate('carts.productID')
+        const search = await dbCarts.findById(req.params.cid).populate('products.productID')
         res.json(search)
     }
     catch (error) {

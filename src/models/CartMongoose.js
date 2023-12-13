@@ -12,5 +12,4 @@ const cartSchema = new Schema({
     /* methods: {} */
 })
 
-
 export const dbCarts = model('carts', cartSchema)
