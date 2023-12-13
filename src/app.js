@@ -12,26 +12,24 @@ console.log(`Database connected`)
 
 const app = express()
 
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Listening in port ${PORT}`)
 })
 
-/* await cm.createCart({
-
-})
+/* await cm.createCart() */
 
 console.log(await cm.findAll())
 
-await pm.createProduct({
+/* await pm.createProduct({
     title: 'a',
     description: 'b',
     code:'c',
     price: 1,
     stock: 2,
     category: 'd'
-})
+}) */
 
-console.log(await pm.findAll()) */
+console.log(await pm.findAll())
 
 app.engine('handlebars', engine())
 app.set('views', './views')

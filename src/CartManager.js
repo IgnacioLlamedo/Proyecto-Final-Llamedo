@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import { dbCarts } from "./models/CartMongoose.js"
+import { pm } from "./ProductManager.js"
 
 class CartManager {
 
@@ -22,7 +23,7 @@ class CartManager {
 
     async findProduct(cartId, productId) {
         const cart = await dbCarts.findById(cartId).lean()
-        const product = carrt.products.find(p => p.productID === productId)
+        const product = cart.products.find(p => p.productID === productId)
         return product
     }
 
@@ -42,8 +43,9 @@ class CartManager {
         try{
             const cart = await dbCarts.findById(cartId)
             if(cart) {
-                const productExists = cart.products.find(p => p.productID === productId)
-                if (!productExists) {
+                pm.findById(productId)
+                const productInCart = cart.products.find(p => p.productID === productId)
+                if (!productInCart) {
                     await dbCarts.findByIdAndUpdate(cartId, { $push: { products: { productID: productId, quantity: 1 } } }, { new: true })
                 }
                 else {
@@ -67,7 +69,7 @@ class CartManager {
         const cart = await dbCarts.findById(cartId).lean()
         if(cart) {
             const product = cart.products.find(p=> p.productID === productId)
-            if(product0) {
+            if(product) {
                 await dbCarts.findByIdAndUpdate(cartId, { $pull: { products: { productID: productId } } }, { new: true }).lean()
             }
             else {

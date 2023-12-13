@@ -1,6 +1,5 @@
 import { randomUUID } from "crypto"
 import { dbProducts } from "./models/ProductMongoose.js"
-import { isGeneratorFunction } from "util/types"
 
 class ProductManager {
     
@@ -17,9 +16,9 @@ class ProductManager {
     async findById(id) {
         const search = await dbProducts.findById(id).lean()
         if (!search) {
-            throw new Error('Product Not Found')
-            return search
+            throw new Error('Product Not Found')            
         }
+        return search
     }
 
     async update(id, newData) {
