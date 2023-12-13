@@ -1,0 +1,17 @@
+{{#if productsExist}}
+<h2>Cart</h2>
+<ul>
+{{#each products}}
+<div>
+    <p>Product "{{this.productID.title}}"</p>
+    <img src={{this.productID.thumbnail}}>
+    <li>Description : {{this.productID.description}}</li>
+    <li>Price : {{this.productID.price}}</li>
+    <li>Category : {{this.productID.category}}</li>
+    <li>Quantity: {{this.quantity}}</li>
+</div>
+{{/each}}
+</ul>
+{{else}}
+<h2>There are no products</h2>
+{{/if}}

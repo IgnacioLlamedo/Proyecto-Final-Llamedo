@@ -1,11 +1,13 @@
 import express from 'express'
 import { cm } from './CartManager.js'
 import { pm } from './ProductManager.js'
-import { engine } from "express-handlebars"
+import { ExpressHandlebars, engine } from "express-handlebars"
 import { webRouter } from "./routes/Web.router.js"
 import { apiRouter } from "./routes/Api.router.js"
 import mongoose from "mongoose"
 import { PORT , MONGO_CNX_STR} from "./config.js"
+import Handlebars from 'handlebars'
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 
 await mongoose.connect(MONGO_CNX_STR)
 console.log(`Database connected`)
@@ -29,9 +31,11 @@ app.listen(PORT, () => {
     category: 'r'
 }) */
 
-console.log(await pm.findAll())
+/* console.log(await pm.findAll()) */
 
-app.engine('handlebars', engine())
+app.engine('handlebars', engine({
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+}))
 app.set('views', './views')
 app.set('view engine', 'handlebars')
 

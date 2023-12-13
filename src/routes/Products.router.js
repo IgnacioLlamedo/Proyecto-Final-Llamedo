@@ -16,6 +16,7 @@ productsRouter.get('/:query', async (req, res) => {
         } else {
             params = await dbProducts.paginate(filter, pagination);
         }
+
         const data = {
             status: 'succes',
             payload: params.docs,
