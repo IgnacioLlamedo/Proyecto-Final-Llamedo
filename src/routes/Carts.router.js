@@ -72,4 +72,28 @@ cartsRouter.put('/:cid/:products/:pid', async (req, res) => {
     }
 })
 
-cartsRouter.delete()
+cartsRouter.delete('/:cid', async (req, res) => {
+    try {
+        const cart = await cm.deleteCart(req.params['cid'])
+        res.json(cart)
+    }
+    catch (error) {
+        res.json({
+            status: "error",
+            message: error.message
+        }) 
+    }
+})
+
+cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
+    try {
+        const cart = await cm.deleteFromCart(req.params['cid'], req.params['cid'])
+        res.json(cart)
+    }
+    catch (error) {
+        res.json({
+            status: "error",
+            message: error.message
+        }) 
+    }
+})
