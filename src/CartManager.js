@@ -86,6 +86,14 @@ class CartManager {
         }
         return updatedCart
     }
+
+    async updateQuantity(cartId, productId, quantity) {
+        const updated = await dbCarts.findByIdAndUpdate(cartId, { $set: { products: { productID: productId, quantity } } }, { $new: true })
+        if(!updated) {
+            throw new Error('Cart or Product Not Found')
+        }
+        return updated
+    }
 }
 
 
