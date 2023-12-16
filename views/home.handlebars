@@ -12,7 +12,11 @@
     <li>Status : {{this.status}}</li>
     <li>Stock : {{this.stock}}</li>
     <li>Category : {{this.category}}</li>
+    <li>Cart id : {{cartId}}</li>
 </div>
+<button onclick="addToCart({{cartId}}, {{this._id}})">
+    Add to cart
+</button>
 {{/each}}
 </ul>
 {{else}}

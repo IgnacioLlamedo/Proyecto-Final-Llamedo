@@ -6,8 +6,14 @@ export const cartsRouter = Router()
 
 cartsRouter.post('/', async (req, res) => {
     try {
-        const newCart = await dbCarts.create(req.body)
-        res.json(newCart)
+        const cart = cm.findAll
+        if(cart){
+            throw new Error('A cart already exists')
+        }
+        else {
+            const newCart = await dbCarts.create(req.body)
+            res.json(newCart)
+        }
     }
     catch (error) {
         res.json({

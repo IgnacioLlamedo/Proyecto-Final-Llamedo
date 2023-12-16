@@ -20,7 +20,9 @@ app.listen(PORT, () => {
 
 /* await cm.createCart() */
 
-/* console.log(await cm.findAll()) */
+/* const a = await cm.findAll()
+
+console.log(a[0]._id) */
 
 /* await pm.createProduct({
     title: 'q',
