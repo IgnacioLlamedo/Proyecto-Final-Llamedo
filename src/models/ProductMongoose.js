@@ -10,7 +10,7 @@ const productSchema = new Schema({
     status: { type: Boolean, default: true },
     stock: { type: Number, required: true },
     category: { type: String, required: true },
-    thumbnail: { type: String, default: 'https://medias.musimundo.com/medias/00382024-143035-143035-01-143035-01.jpg-size300?context=bWFzdGVyfGltYWdlc3wxMzI0OXxpbWFnZS9qcGVnfGg2YS9oZDIvMTAzODA1MTk2MzcwMjIvMDAzODIwMjQtMTQzMDM1LTE0MzAzNV8wMS0xNDMwMzVfMDEuanBnX3NpemUzMDB8ZjcwOWRjYWJlZWM5MzBjOWUyNzZlOWQ2ZWRjY2NhNmE3Zjk3ZmMxNDA0ZDcxMmNhMTIxNzlhMTI2MDI0MDliZQ' }
+    thumbnail: { type: String, default: 'https://medias.musimundo.com/medias/00597014-146976-146976-01-146976-01.jpg-size300?context=bWFzdGVyfGltYWdlc3w0MjI0N3xpbWFnZS9qcGVnfGhhOC9oMzcvMTA0NDE1NTk5OTg0OTQvMDA1OTcwMTQtMTQ2OTc2LTE0Njk3Nl8wMS0xNDY5NzZfMDEuanBnX3NpemUzMDB8NTkzMjE0NDA3OGVjNDg5MDk5ZjUyNmE2YzBlMmQ0MjI0Y2I3N2YzM2Y3ODNhMTYyZWE4OGE4ZGM2Yzk3NmQwYg' }
 }, {
     versionKey: false,
     strict: 'throw',

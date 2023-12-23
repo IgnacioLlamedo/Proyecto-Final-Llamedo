@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { cm } from "../CartManager.js"
-import { dbCarts } from "../models/CartMongoose.js";
+import { cm } from "../../CartManager.js"
+import { dbCarts } from "../../models/CartMongoose.js";
 
 export const cartsRouter = Router()
 

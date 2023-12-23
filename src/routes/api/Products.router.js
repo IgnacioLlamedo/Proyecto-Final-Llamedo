@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { pm } from "../ProductManager.js"
-import { dbProducts } from "../models/ProductMongoose.js"
+import { pm } from "../../ProductManager.js"
+import { dbProducts } from "../../models/ProductMongoose.js"
 
 export const productsRouter = Router()
 
@@ -41,7 +41,7 @@ productsRouter.get('/:query', async (req, res) => {
 
 productsRouter.get('/:pid', async (req, res) => {
     try {
-        const search = await pm.findById(req.params['pid'])
+        const search = await pm.findById(req.params.pid)
         res.json({ Product: search })
     }
     catch (error) {

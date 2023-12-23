@@ -2,8 +2,9 @@ import express from 'express'
 import { cm } from './CartManager.js'
 import { pm } from './ProductManager.js'
 import { ExpressHandlebars, engine } from "express-handlebars"
-import { webRouter } from "./routes/Web.router.js"
-import { apiRouter } from "./routes/Api.router.js"
+import { s } from './middlewares/session.js'
+import { webRouter } from "./routes/web/Web.router.js"
+import { apiRouter } from "./routes/api/Api.router.js"
 import mongoose from "mongoose"
 import { PORT , MONGO_CNX_STR} from "./config.js"
 import Handlebars from 'handlebars'
@@ -42,6 +43,8 @@ app.set('views', './views')
 app.set('view engine', 'handlebars')
 
 app.use('/static', express.static('./static'))
+app.use(s)
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use('/api', apiRouter)
 app.use('/', webRouter)
