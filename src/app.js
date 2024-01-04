@@ -9,6 +9,9 @@ import mongoose from "mongoose"
 import { PORT , MONGO_CNX_STR} from "./config.js"
 import Handlebars from 'handlebars'
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
+import { authentication } from './middlewares/passport.js'
+import { Db } from 'mongodb'
+import { dbCarts } from './models/CartMongoose.js'
 
 await mongoose.connect(MONGO_CNX_STR)
 console.log(`Database connected`)
@@ -46,5 +49,8 @@ app.use('/static', express.static('./static'))
 app.use(s)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(authentication)
 app.use('/api', apiRouter)
 app.use('/', webRouter)
+
+/* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */

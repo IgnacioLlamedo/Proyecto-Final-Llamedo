@@ -19,7 +19,7 @@ webRouter.get('/products', async (req, res) => {
         products,
         cartId,
         style: 'home.css',
-        user: req.session['user']
+        user: req.user
     })
 })
 
@@ -37,3 +37,5 @@ webRouter.get('/carts/:cid', async (req, res) => {
 
 webRouter.use(sessionsRouter)
 webRouter.use(usersRouter)
+
+webRouter.get('/', (req, res) => { return res.redirect('/login') })

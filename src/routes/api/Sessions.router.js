@@ -1,51 +1,33 @@
 import { Router } from "express";
-import { userManager } from "../../models/UserMongoose.js";
+import passport from "passport";
+import { logApi } from "../../middlewares/auth.js";
 
 export const sessionsRouter = Router()
 
-sessionsRouter.post('/', async (req, res) => {
-    const { mail, password } = req.body
-    let userData
-    if(mail === 'adminCoder@coder.com' && password === 'adminCod3r123'){
-        userData = {
-            mail: 'admin',
-            userName: 'admin',
-            role: 'admin'
-        }
+sessionsRouter.post('/', 
+    passport.authenticate('login', {
+        failWithError: true
+    }),
+    function(req, res){
+        res.status(201).json({ status: 'succes', payload: req.user })
+    },
+    function(error, req, res, next){
+        res.status(401).json({ status: 'error', message: 'Login failed' })
     }
-    else{
-        const user = await userManager.findOne({ mail }).lean()
-        if(!user){
-            return res.status(400).json({ status: 'error', message: 'login failed' })
-        }
-        if(password !== user.password){
-            return res.status(400).json({ status: 'error', message: 'login failed' })
-        }
-        userData = {
-            mail: user.mail,
-            username: user.username,
-            role: 'user'
-        }
-        req.session['user'] = userData
-        res.status(201).json({ status: 'succes', message: 'login succesful'})
-    }
-})
+)
 
-sessionsRouter.get('/current', (req, res) => {
-    if(req.session['user']){
-        return res.json(req.session['user'])
+sessionsRouter.get('/current',
+    logApi,
+    function(req, res){
+        return res.json(req.user)
     }
-    return res.status(400).json({ status: 'error', message: 'session not found' })
-})
+)
 
 sessionsRouter.delete('/current', (req, res) => {
-    req.session.destroy(error => {
+    req.logOut(error => {
         if(error){
-            return res.status(500).json({ status: 'logout error', body: error})
+            return res.status(500).json({ status: 'error', body: error })
         }
-        res.status(201).json({ status: 'succes', message: 'logut succesful' })
+        res.json({ status: 'succes', message: 'Logout succesful'})
     })
 })
-
-
-

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userManager } from "../../models/UserMongoose.js";
+import passport from "passport";
 
 export const sessionsRouter = Router()
 
@@ -10,41 +10,32 @@ sessionsRouter.get('/login', function loginView(req, res){
     })
 })
 
-sessionsRouter.post('/login', async (req, res) => {
-    try{
-        const { mail, password } = req.body
-        let userData
-        if(mail === 'adminCoder@coder.com' && password === 'adminCod3r123'){
-            userData = {
-                mail: 'admin',
-                username: 'admin',
-                role: 'admin'
-            }
-        }
-        else{
-            const user = await userManager.findOne({ mail }).lean()
-            if(!user){
-                return res.redirect('/login')
-            }
-            if(password !== user.password){
-                return res.redirect('/login')
-            }
-            userData = {
-                mail: user.mail,
-                username: user.username,
-                role: 'user'
-            }
-        }
-        req.session['user'] = userData
-        res.redirect('/products')
-    }
-    catch(error){
-        res.redirect('/login')
-    }
-})
+sessionsRouter.post('/login',
+    passport.authenticate('login', {
+        successRedirect: '/profile',
+        failureRedirect: '/login'
+    })
+)
+
+sessionsRouter.get('/githublogin',
+    passport.authenticate('github', { scope: ['user:email'] })
+)
+
+sessionsRouter.get('/githubcallback',
+    passport.authenticate('github', {
+        successRedirect: '/profile',
+        failureRedirect: '/login'
+    })
+)
 
 sessionsRouter.post('/logout', (req, res) => {
-    req.session.destroy(error => {
+    /* req.session.destroy(error => {
+        res.redirect('/login')
+    }) */
+    req.logOut(error => {
+        if(error){
+            console.log(error)
+        }
         res.redirect('/login')
     })
 })

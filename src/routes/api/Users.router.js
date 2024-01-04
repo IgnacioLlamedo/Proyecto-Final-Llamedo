@@ -1,23 +1,37 @@
 import { Router } from "express";
 import { userManager } from "../../models/UserMongoose.js";
-import { logApi } from "../../middlewares/session.js";
+import { logApi, adminPermission } from "../../middlewares/auth.js";
+import passport from "passport";
 
 export const usersRouter = Router()
 
-usersRouter.post('/', async (req, res) => {
-    try{
-        const user = await userManager.create(req.body)
-        res.status(201).json({ status: 'succes', payload: user})
+usersRouter.post('/',
+    passport.authenticate('register', {
+        failWithError: true
+    }),
+    function(req, res){
+        res.status(201).json({ status: 'succes', payload: req.user})
+    },
+    function(error, req, res, next){
+        res.status(400).json({ status: 'error', message: error.message })
     }
-    catch (error){
+)
+
+usersRouter.get('/current', logApi, async (req, res) => {
+    res.json({ status: 'succes', payload: req.user })
+})
+
+usersRouter.put('/', async function (req, res) {
+    try{
+        const updated = await userManager.resetPass(req.body.email, req.body.password)
+        res.json({ status: 'succes', payload: updated })
+    }
+    catch(error){
         res.status(400).json({ status: 'error', message: error.message })
     }
 })
 
-usersRouter.get('/current', logApi, async (req, res) => {
-    const user = await userManager.findOne({ mail: req.session['user'].mail }, { password: 0}).lean()
-    res.json({ status: 'succes', payload: user })
+usersRouter.get('/', adminPermission, async(req, res) => {
+    const users = await userManager.find().lean()
+    res.json({ status: 'succes', payload: users })
 })
-
-
-

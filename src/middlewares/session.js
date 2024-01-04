@@ -12,17 +12,3 @@ export const s = session({
     resave: false,
     saveUninitialized: false
 })
-
-export function logApi(req, res, next){
-    if(!req.session['user']){
-        return res.status(400).json({ status: 'error', message: 'Login is necessary'})
-    }
-    next()
-}
-
-export function logWeb(req, res, next){
-    if(!req.session['user']){
-        return res.redirect('/login')
-    }
-    next()
-}
