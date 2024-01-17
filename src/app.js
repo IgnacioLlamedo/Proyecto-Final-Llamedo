@@ -6,20 +6,20 @@ import { s } from './middlewares/session.js'
 import { webRouter } from "./routes/web/Web.router.js"
 import { apiRouter } from "./routes/api/Api.router.js"
 import mongoose from "mongoose"
-import { PORT , MONGO_CNX_STR} from "./config.js"
 import Handlebars from 'handlebars'
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { authentication } from './middlewares/passport.js'
 import { Db } from 'mongodb'
 import { dbCarts } from './models/CartMongoose.js'
+import config from './config.js'
 
-await mongoose.connect(MONGO_CNX_STR)
+await mongoose.connect(config.cnxStr)
 console.log(`Database connected`)
 
 const app = express()
 
-app.listen(PORT, () => {
-    console.log(`Listening in port ${PORT}`)
+app.listen(config.port, () => {
+    console.log(`Listening in port ${config.port}`)
 })
 
 /* await cm.createCart() */
@@ -54,3 +54,11 @@ app.use('/api', apiRouter)
 app.use('/', webRouter)
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
+
+/* .Capas:
+          routing,
+          dao,
+          controlador,
+          vistas bien separadas,
+          responsabilidades correctamente delegadas
+*/

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userManager } from "../../models/UserMongoose.js";
+import { User } from "../../models/UserMongoose.js";
 import { logApi, adminPermission } from "../../middlewares/auth.js";
 import passport from "passport";
 
@@ -23,7 +23,7 @@ usersRouter.get('/current', logApi, async (req, res) => {
 
 usersRouter.put('/', async function (req, res) {
     try{
-        const updated = await userManager.resetPass(req.body.email, req.body.password)
+        const updated = await User.resetPass(req.body.email, req.body.password)
         res.json({ status: 'succes', payload: updated })
     }
     catch(error){
@@ -32,6 +32,6 @@ usersRouter.put('/', async function (req, res) {
 })
 
 usersRouter.get('/', adminPermission, async(req, res) => {
-    const users = await userManager.find().lean()
+    const users = await User.find().lean()
     res.json({ status: 'succes', payload: users })
 })

@@ -1,20 +1,20 @@
 import { randomUUID } from "crypto"
-import { dbProducts } from "./models/ProductMongoose.js"
+import { Product } from "./models/ProductMongoose.js"
 
 class ProductManager {
     
     async createProduct(productData) {
         productData._id = randomUUID()
-        const product = await dbProducts.create(productData)
+        const product = await Product.create(productData)
         return product.toObject()
     }
 
     async findAll() {
-        return await dbProducts.find().lean()
+        return await Product.find().lean()
     }
 
     async findById(id) {
-        const search = await dbProducts.findById(id).lean()
+        const search = await Product.findById(id).lean()
         if (!search) {
             throw new Error('Product Not Found')            
         }
@@ -22,7 +22,7 @@ class ProductManager {
     }
 
     async update(id, newData) {
-        const updated = await dbProducts.findByIdAndUpdate(id, { $set: newData }, { new: true }).lean()
+        const updated = await Product.findByIdAndUpdate(id, { $set: newData }, { new: true }).lean()
         if (!updated) {
             throw new Error('Product Not Found')
         }
@@ -30,7 +30,7 @@ class ProductManager {
     }
 
     async delete(id) {
-        const deleted = await dbProducts.findByIdAndDelete(id).lean()
+        const deleted = await Product.findByIdAndDelete(id).lean()
         if (!deleted) {
             throw new Error('Product Not Found')
         }
@@ -38,7 +38,7 @@ class ProductManager {
     }
 
     async findByCategory(category) {
-        const search = await dbProducts.findMany({ category: category }).lean()
+        const search = await Product.findMany({ category: category }).lean()
         if(!search) {
             throw new Error('Category Not Found')
         }

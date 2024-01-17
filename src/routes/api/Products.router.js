@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { pm } from "../../ProductManager.js"
-import { dbProducts } from "../../models/ProductMongoose.js"
+import { Product } from "../../models/ProductMongoose.js"
 
 export const productsRouter = Router()
 
@@ -10,11 +10,11 @@ productsRouter.get('/:query', async (req, res) => {
         const pagination = { limit: req.query.limit || 10, page: req.query.page || 1, sort: req.query.sort, lean: true }
         let params;
         if (req.query.sort === 'asc') {
-            params = await dbProducts.paginate(filter, { ...pagination, sort: { price: 1 } });
+            params = await Product.paginate(filter, { ...pagination, sort: { price: 1 } });
         } else if (req.query.sort === 'desc') {
-            params = await dbProducts.paginate(filter, { ...pagination, sort: { price: -1 } });
+            params = await Product.paginate(filter, { ...pagination, sort: { price: -1 } });
         } else {
-            params = await dbProducts.paginate(filter, pagination);
+            params = await Product.paginate(filter, pagination);
         }
 
         const data = {

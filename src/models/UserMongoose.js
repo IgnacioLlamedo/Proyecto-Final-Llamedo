@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     _id: { type: String, default: randomUUID },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    username: { type: String, required: true }
+    username: { type: String, required: true },
+    role: { type: String, enum: ['user', 'admin'], default: 'user'}
 }, {
     strict: 'throw',
     versionKey: false,
@@ -76,8 +77,11 @@ const userSchema = new mongoose.Schema({
                 username: updated['username'],
                 role: 'user'
             }
+        },
+        list: async query => {
+            return await mongoose.model(collection).find(query).lean()
         }
     }
 })
 
-export const userManager = mongoose.model(collection, userSchema)
+export const User = mongoose.model(collection, userSchema)

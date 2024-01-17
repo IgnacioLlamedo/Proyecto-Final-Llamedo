@@ -1,8 +1,12 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
-import { userManager } from '../models/UserMongoose.js'
-import { githubCallbackUrl, githubClientId, githubClientSecret } from '../config.js'
+import { User } from '../models/UserMongoose.js'
+import config from '../config.js'
+
+const githubClientId = config.ghClId
+const githubClientSecret = config.ghClSec
+const githubCallbackUrl = config.ghCBUrl
 
 passport.use('github', new GithubStrategy({
   clientID: githubClientId,
@@ -10,21 +14,21 @@ passport.use('github', new GithubStrategy({
   callbackURL: githubCallbackUrl
 }, async function verify(accesToken, refreshToken, profile, done){
   /* console.log(profile) */
-  const user = await userManager.findOne({ email: `${profile.username} (Github)` })
+  const user = await User.findOne({ email: `${profile.username} (Github)` })
   if(user){
     return done(null, {...user.public(), role: 'user'})
   }
   try{
     let reg
     if(profile.displayName){
-      reg = await userManager.create({
+      reg = await User.create({
         email: `${profile.username} (Github)`,
         password: '.',
         username: profile.displayName
       })
     }
     else{
-      reg = await userManager.create({
+      reg = await User.create({
         email: `${profile.username} (Github)`,
         password: '.',
         username: 'Username Not Found'
@@ -42,7 +46,7 @@ passport.use('register', new LocalStrategy({
   usernameField: 'email'
 }, async(req, username, password, done) => {
   try{
-    const userData = await userManager.register(req.body)
+    const userData = await User.register(req.body)
     done(null, userData)
   }
   catch(error){
@@ -54,7 +58,7 @@ passport.use('login', new LocalStrategy({
   usernameField: 'email'
 }, async (email, password, done) => {
   try{
-    const userData = await userManager.authenticate(email, password)
+    const userData = await User.authenticate(email, password)
     done(null, userData)
   }
   catch(error){

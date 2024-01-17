@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userManager } from "../../models/UserMongoose.js";
+import { User } from "../../models/UserMongoose.js";
 import { logWeb } from "../../middlewares/auth.js";
 import passport from "passport";
 
@@ -28,7 +28,7 @@ usersRouter.get('/resetpass', function resetPassView(req, res){
 
 usersRouter.post('/resetpass', async function resetPass(req, res){
     try {
-        await userManager.resetPass(req.body,email, req.body.password)
+        await User.resetPass(req.body,email, req.body.password)
         res.redirect('/login')
     }
     catch(error) {
