@@ -2,8 +2,6 @@ import session from "express-session";
 import config from "../config.js";
 import connectMongo from 'connect-mongo'
 
-console.log(config)
-
 const store = connectMongo.create({
     mongoUrl: config.cnxStr,
     ttl: 60 * 60 * 24

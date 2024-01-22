@@ -1,11 +1,13 @@
-import { Router } from "express";
-import { cm } from "../../CartManager.js";
-import { pm } from "../../ProductManager.js";
-import { dbCarts } from "../../models/CartMongoose.js";
+import express from "express";
+/* import { cm } from "../../CartManager.js";
+import { pm } from "../../ProductManager.js"; */
+import { Cart } from "../../models/CartMongoose.js";
 import { sessionsRouter } from "./Sessions.router.js";
 import { usersRouter } from "./Users.router.js";
+import { cartsRouter } from "./Carts.router.js";
+import { productsRouter } from "./Products.router.js";
 
-export const webRouter = Router()
+export const webRouter = express.Router()
 
 webRouter.get('/products', async (req, res) => {
     const products = await pm.findAll()
@@ -36,6 +38,7 @@ webRouter.get('/carts/:cid', async (req, res) => {
 })
 
 webRouter.use(sessionsRouter)
+
 webRouter.use(usersRouter)
 
 webRouter.get('/', (req, res) => { return res.redirect('/login') })

@@ -1,7 +1,7 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
-import { User } from '../models/UserMongoose.js'
+import { userDao } from '../daos/index.js'
 import config from '../config.js'
 
 const githubClientId = config.ghClId
@@ -14,21 +14,21 @@ passport.use('github', new GithubStrategy({
   callbackURL: githubCallbackUrl
 }, async function verify(accesToken, refreshToken, profile, done){
   /* console.log(profile) */
-  const user = await User.findOne({ email: `${profile.username} (Github)` })
+  const user = await userDao.create({ email: `${profile.username} (Github)` })
   if(user){
     return done(null, {...user.public(), role: 'user'})
   }
   try{
     let reg
     if(profile.displayName){
-      reg = await User.create({
+      reg = await userDao.create({
         email: `${profile.username} (Github)`,
         password: '.',
         username: profile.displayName
       })
     }
     else{
-      reg = await User.create({
+      reg = await userDao.create({
         email: `${profile.username} (Github)`,
         password: '.',
         username: 'Username Not Found'
@@ -46,7 +46,7 @@ passport.use('register', new LocalStrategy({
   usernameField: 'email'
 }, async(req, username, password, done) => {
   try{
-    const userData = await User.register(req.body)
+    const userData = await userDao.create(req.body)
     done(null, userData)
   }
   catch(error){
@@ -58,7 +58,7 @@ passport.use('login', new LocalStrategy({
   usernameField: 'email'
 }, async (email, password, done) => {
   try{
-    const userData = await User.authenticate(email, password)
+    const userData = await userDao.readOne(email, password)
     done(null, userData)
   }
   catch(error){

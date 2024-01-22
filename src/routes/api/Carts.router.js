@@ -1,105 +1,18 @@
-import { Router } from "express";
-import { cm } from "../../CartManager.js"
-import { dbCarts } from "../../models/CartMongoose.js";
+import express from "express";
+import { getController as list, postController as cre, addProductController as addProduct, deleteProductController as deleteProduct, emptyController as empty, populateController as populate } from "../../controllers/CartController.js";
 
-export const cartsRouter = Router()
+export const cartsRouter = express.Router()
 
-cartsRouter.post('/', async (req, res) => {
-    try {
-        const cart = cm.findAll
-        if(cart){
-            throw new Error('A cart already exists')
-        }
-        else {
-            const newCart = await dbCarts.create(req.body)
-            res.json(newCart)
-        }
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.use(express.json)
 
-cartsRouter.get('/:cid', async (req, res) => {
-    try {
-        const search = await dbCarts.findById(req.params.cid).populate('products.productID')
-        res.json(search)
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.post('/', cre)
 
-cartsRouter.post('/:cid/products/:pid', async (req, res) => {
-    try {
-        const { cid, pid } = req.params
-        const cart = await cm.addToCart(cid, pid)
-        res.json(cart)
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.post('/:cid/products/:pid', addProduct)
 
-cartsRouter.put('/:cid', async (req, res) => {
-    try {
-        const { product, quantity } = req.body
-        const cart = await cm.updateCart(req.params['cid'], { product, quantity })
-        res.json(cart)
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.get('/', list)
 
-cartsRouter.put('/:cid/:products/:pid', async (req, res) => {
-    try {
-        const {quantity } = req.body
-        const cart = await cm.updateQuantity(req.params['cid'], req.params['pid'], quantity)
-        res.json(cart)
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.get('/:cid', populate)
 
-cartsRouter.delete('/:cid', async (req, res) => {
-    try {
-        const cart = await cm.deleteCart(req.params['cid'])
-        res.json(cart)
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.put('/:cid', empty)
 
-cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
-    try {
-        const cart = await cm.deleteFromCart(req.params['cid'], req.params['cid'])
-        res.json(cart)
-    }
-    catch (error) {
-        res.json({
-            status: "error",
-            message: error.message
-        }) 
-    }
-})
+cartsRouter.put('/:cid/products/:pid', deleteProduct)
