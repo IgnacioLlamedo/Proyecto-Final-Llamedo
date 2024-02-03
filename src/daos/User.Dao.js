@@ -1,19 +1,10 @@
-import { User } from "../models/UserMongoose.js";
+import { User } from "../models/User.Mongoose.js";
 
 export class userDao {
     async create(userData){
-        /* userData.password = hash(userData.password) */
-        return await User.create(userData).lean()
+        return await User.create(userData)
     }
     async readOne(query){
-        /* const user = await User.findOne({ email: username }).lean()
-        if(!user){
-            throw new Error('Login failed')
-        }
-        if(!compareHash(password, user['password'])){
-            throw new Error('Login failed')
-        }
-        return user */
         const user = await User.findOne(query).lean()
         if(!user){
             throw new Error('User Not Found')
@@ -24,16 +15,6 @@ export class userDao {
         return await User.find(query).lean()
     }
     async updateOne(query){
-        /* const newPass = hash(password)
-        const updated = await User.findOneAndUpdate(
-            { email },
-            { $set: { password: newPass } },
-            { new: true }
-        ).lean()
-        if(!updated){
-            throw new Error('Failed resetting password')
-        }
-        return updated */
         const updated = await User.findOneAndUpdate(query, newData, { new: true }).lean()
         if(!updated){
             throw new Error('User Not Found')

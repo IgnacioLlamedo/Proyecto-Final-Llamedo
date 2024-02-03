@@ -1,24 +1,37 @@
-import { User } from "../models/UserMongoose.js";
+import { service as userService } from "../services/User.Service.js"
 
 export async function postController(req, res, next){
-    const userData = req.body
-    const user = await User.register(userData)
-    res.status(201).json(user)
+    try{
+        res.status(201).json(await userService.create(req.body))
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function getController(req, res, next){
-    const query = req.query
-    const users = await User.list(query)
-    res.json(users)
+    try{
+        res.json(await userService.readOne({ email: req.body.email }))
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function updateController(req, res, next){
-    const updated = await User.resetPass(req.body.email, req.body.password)
-    res.status(201).json(updated)
-
+    try{
+        res.status(202).json(await userService.updateOne({ email:req.body.email }, req.body.password))
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function getCurrentController(req, res, next){
-    const current = req.user
-    return current
+    try{
+        return req.user
+    }
+    catch(error){
+        next(error)
+    }
 }

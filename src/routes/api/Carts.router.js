@@ -1,18 +1,18 @@
 import express from "express";
-import { getController as list, postController as cre, addProductController as addProduct, deleteProductController as deleteProduct, emptyController as empty, populateController as populate } from "../../controllers/CartController.js";
+import { getController, postController, addProductController, deleteProductController, emptyController, populateController } from "../../controllers/Cart.Controller.js";
 
 export const cartsRouter = express.Router()
 
 cartsRouter.use(express.json)
 
-cartsRouter.post('/', cre)
+cartsRouter.post('/', postController)
 
-cartsRouter.post('/:cid/products/:pid', addProduct)
+cartsRouter.post('/:cid/products/:pid', addProductController)
 
-cartsRouter.get('/', list)
+cartsRouter.get('/', getController)
 
-cartsRouter.get('/:cid', populate)
+cartsRouter.get('/:cid', populateController)
 
-cartsRouter.put('/:cid', empty)
+cartsRouter.put('/:cid', emptyController)
 
-cartsRouter.put('/:cid/products/:pid', deleteProduct)
+cartsRouter.put('/:cid/products/:pid', deleteProductController)

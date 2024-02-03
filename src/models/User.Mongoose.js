@@ -9,7 +9,7 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     username: { type: String, required: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
-    cartId: { type: String, ref: 'carts' }
+    cartId: { type: String, ref: 'carts', default: randomUUID }
 }, {
     strict: 'throw',
     versionKey: false,

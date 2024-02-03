@@ -30,6 +30,17 @@ app.use('/', webRouter)
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 
+/* 
+Ejemplo de producto
+{
+    "title": "title",
+    "description": "description",
+    "code": "code",
+    "price": 1,
+    "stock": 1,
+    "category": "category"
+} */
+
 /* There's a key difference between lean() and toObject() - toObject() converts a mongoose document into a POJO, 
 lean() makes it so that you never get a mongoose document and just get a POJO. 
 Mongoose documents have a lot under the hood and that comes with performance impact, 

@@ -29,9 +29,6 @@ sessionsRouter.get('/githubcallback',
 )
 
 sessionsRouter.post('/logout', (req, res) => {
-    /* req.session.destroy(error => {
-        res.redirect('/login')
-    }) */
     req.logOut(error => {
         if(error){
             console.log(error)

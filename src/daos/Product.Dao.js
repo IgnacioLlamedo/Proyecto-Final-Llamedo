@@ -1,4 +1,4 @@
-import { Product } from "../models/ProductMongoose.js";
+import { Product } from "../models/Product.Mongoose.js";
 
 export class productDao {
     async create(productData){

@@ -1,5 +1,5 @@
 import express from "express";
-import { postController as register, getController as list, getCurrentController as current, updateController as upd } from "../../controllers/UserController.js";
+import { postController as register, getController as list, getCurrentController as current, updateController as upd } from "../../controllers/User.Controller.js";
 
 export const usersRouter = express.Router()
 

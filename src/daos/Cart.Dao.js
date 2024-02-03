@@ -1,4 +1,4 @@
-import { Cart } from "../models/CartMongoose.js";
+import { Cart } from "../models/Cart.Mongoose.js";
 
 export class cartDao {
     async create(){
@@ -28,6 +28,13 @@ export class cartDao {
             throw new Error('Cart Not Found')
         }
         return deleted
+    }
+    async populate(query){
+        const cart = await Cart.findOne(query)
+        if(!cart){
+            throw new Error('Cart Not Found')
+        }
+        return cart.populate('product.productId').lean()
     }
 }
 

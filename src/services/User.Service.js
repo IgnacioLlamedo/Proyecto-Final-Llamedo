@@ -1,33 +1,36 @@
 import { userDao } from "../daos/index.js";
-import { randomUUID } from "node:crypto"
 
-import class userService{
-    async create(){
-        /* userData.password = hash(userData.password) */
+class userService{
+    async create(userData){
+        userData.password = hash(userData.password)
+        userDao.create(userData)
     }
-    async readOne(){
-        /* const user = await User.findOne({ email: username }).lean()
-        if(!user){
-            throw new Error('Login failed')
-        }
+    async readOne(username, password){
+        const user = await userDao.readOne({ email: username })
         if(!compareHash(password, user['password'])){
             throw new Error('Login failed')
         }
-        return user */
+        return user
     }
-    async updateOne(){
-        /* const newPass = hash(password)
-        const updated = await User.findOneAndUpdate(
+    async readMany(query){
+        return await userDao.readMany(query)
+    }
+    async updateOne(email, password){
+        const newPass = hash(password)
+        const updated = await userDao.updateOne(
             { email },
             { $set: { password: newPass } },
             { new: true }
-        ).lean()
+        )
         if(!updated){
             throw new Error('Failed resetting password')
         }
-        return updated */
+        return updated
+    }
+    async deleteOne(query){
+        return await userDao.deleteOne(query)
     }
 }
 
-
+export const service = new userService()
 

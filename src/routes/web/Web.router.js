@@ -1,41 +1,14 @@
 import express from "express";
-/* import { cm } from "../../CartManager.js";
-import { pm } from "../../ProductManager.js"; */
-import { Cart } from "../../models/CartMongoose.js";
-import { sessionsRouter } from "./Sessions.router.js";
-import { usersRouter } from "./Users.router.js";
-import { cartsRouter } from "./Carts.router.js";
-import { productsRouter } from "./Products.router.js";
+import { sessionsRouter } from "./Sessions.Router.js";
+import { usersRouter } from "./Users.Router.js";
+import { cartsRouter } from "./Carts.Router.js";
+import { productsRouter } from "./Products.Router.js";
 
 export const webRouter = express.Router()
 
-webRouter.get('/products', async (req, res) => {
-    const products = await pm.findAll()
-    const cart = await cm.findAll()
-    const cartId = cart[0]._id
-    console.log(cartId)
-    res.render('home', 
-    { 
-        title: 'Products',
-        productsExist: products.length > 0,
-        products,
-        cartId,
-        style: 'home.css',
-        user: req.user
-    })
-})
+webRouter.use('/carts', cartsRouter)
 
-webRouter.get('/carts/:cid', async (req, res) => {
-    const populated = await dbCarts.findById(req.params.cid).populate('products.productID')
-    const products = populated.products
-    res.render('cart', 
-    { 
-        title: 'Cart',
-        productsExist: products.length > 0,
-        products,
-        style: 'home.css'
-    })
-})
+webRouter.use(productsRouter)
 
 webRouter.use(sessionsRouter)
 

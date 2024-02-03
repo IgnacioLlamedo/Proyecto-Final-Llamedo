@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { User } from "../../models/UserMongoose.js";
+import { updateController } from "../../controllers/User.Controller.js";
 import { logWeb } from "../../middlewares/auth.js";
 import passport from "passport";
 
@@ -26,16 +26,7 @@ usersRouter.get('/resetpass', function resetPassView(req, res){
     })
 })
 
-usersRouter.post('/resetpass', async function resetPass(req, res){
-    try {
-        await User.resetPass(req.body,email, req.body.password)
-        res.redirect('/login')
-    }
-    catch(error) {
-        console.log(error)
-        res.redirect('/resetpass')
-    }
-})
+usersRouter.post('/resetpass', updateController)
 
 usersRouter.get('/profile', logWeb, function profileView(req, res){
     res.render('profile', {

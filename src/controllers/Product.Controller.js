@@ -1,4 +1,5 @@
 import { productDao } from "../daos/index.js"
+import { service as webService } from "../services/Web.Service.js"
 
 export async function postController(req, res, next){
     try{
@@ -11,12 +12,26 @@ export async function postController(req, res, next){
 
 export async function getController(req, res, next){
     try{
-        if(req.params.pid){
-            res.json(await productDao.readOne({ _id: req.params.pid }))
-        }
-        else{
-            res.json(await productDao.readMany(req.query))
-        }
+        res.json(await productDao.readMany(req.query))
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+export async function getControllerWeb(req, res, next){
+    try{
+        const products = await productDao.readMany(req.query)
+        const cartId = req.user.cartId
+        res.render('home', 
+        { 
+            title: 'Products',
+            productsExist: products.length > 0,
+            products,
+            cartId,
+            style: 'home.css',
+            user: req.user
+        })
     }
     catch(error){
         next(error)

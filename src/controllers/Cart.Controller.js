@@ -1,38 +1,61 @@
-import { Cart } from "../models/CartMongoose.js";
+import { cartDao } from "../daos/index.js"
+import { service as cartService } from "../services/Cart.Service.js"
 
 export async function postController(req, res, next){
-    const cart = Cart.cre()
-    res.status(201).json(cart)
+    try{
+        res.status(201).json(await cartDao.create())
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function getController(req, res, next){
-    const query = req.query
-    const cart = Cart.list(query)
-    res.json(cart)
+    try{
+        if(req.params.cid){
+            res.json(await cartDao.readOne({ _id: req.params.cid }))
+        }
+        else{
+            res.json(await cartDao.readMany(req.query))
+        }
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function emptyController(req, res, next){
-    const cid = req.params
-    const cart = Cart.empty(cid)
-    res.status(201).json(cart)
+    try{
+        res.status(202).json(await cartDao.updateOne({ _id: req.params.cid }, []))
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function addProductController(req, res, next){
-    const { cid, pid } = req.params
-    const cart = Cart.addProduct(cid, pid)
-    res.status(201).json(cart)
+    try{
+        res.status(201).json(await cartService.addProduct(req.params.cid, req.params.pid))
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function deleteProductController(req, res, next){
-    const { cid, pid } = req.params
-    const cart = Cart.deleteProduct(cid, pid)
-    res.status(201).json(cart)
+    try{
+        res.status(202).json(await cartService.deleteProduct(req.parms.cid, req.params.pid))
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export async function populateController(req, res, next){
-    const cid = req.params
-    const cart = Cart.populate(cid)
-    res.json(cart)
+    try{
+        res.json(await cartDao.populate({ _id: req.params.cid }))
+    }
+    catch(error){
+        next(error)
+    }
 }
-
-
