@@ -1,6 +1,8 @@
 {{#if productsExist}}
 <h2>Cart</h2>
+<a href="/products">Home</a>
 <ul>
+    <li>Cart id: {{cartId}}</li>
 {{#each products}}
 <div>
     <p>Product "{{this.productID.title}}"</p>
@@ -10,8 +12,12 @@
     <li>Category : {{this.productID.category}}</li>
     <li>Quantity: {{this.quantity}}</li>
 </div>
+<button onclick="del('{{this._id}}', '{{../cartId}}')">
+    Delete product
+</button>
 {{/each}}
 </ul>
 {{else}}
 <h2>There are no products</h2>
+<a href="/home">Home</a>
 {{/if}}

@@ -1,9 +1,13 @@
 import { userDao } from "../daos/index.js";
+import { hash, compareHash } from "../utils/crypt.js";
+import { cartDao } from "../daos/index.js";
 
 class userService{
     async create(userData){
         userData.password = hash(userData.password)
-        userDao.create(userData)
+        const user = await userDao.create(userData)
+        await cartDao.create(user.cartId)
+        return user
     }
     async readOne(username, password){
         const user = await userDao.readOne({ email: username })

@@ -6,7 +6,7 @@ import { productsRouter } from "./Products.Router.js";
 
 export const webRouter = express.Router()
 
-webRouter.use('/carts', cartsRouter)
+webRouter.use(cartsRouter)
 
 webRouter.use(productsRouter)
 

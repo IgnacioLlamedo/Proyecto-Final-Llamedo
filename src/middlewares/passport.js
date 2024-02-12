@@ -1,6 +1,7 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
+import { service as userService } from '../services/User.Service.js'
 import { userDao } from '../daos/index.js'
 import config from '../config.js'
 
@@ -46,7 +47,7 @@ passport.use('register', new LocalStrategy({
   usernameField: 'email'
 }, async(req, username, password, done) => {
   try{
-    const userData = await userDao.create(req.body)
+    const userData = await userService.create(req.body)
     done(null, userData)
   }
   catch(error){

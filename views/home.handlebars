@@ -1,6 +1,7 @@
 <h1>Welcome {{user.username}}</h1>
 <p>E-mail: {{user.email}}</p>
 <a href="/profile">Profile</a>
+<a href="/cart">Cart</a>
 {{#if productsExist}}
 <h2>Products</h2>
 <ul>
@@ -16,9 +17,8 @@
     <li>Status : {{this.status}}</li>
     <li>Stock : {{this.stock}}</li>
     <li>Category : {{this.category}}</li>
-    <li>Cart id : {{cartId}}</li>
 </div>
-<button onclick="addToCart({{cartId}}, {{this._id}})">
+<button onclick="add('{{this._id}}', '{{../cartId}}')">
     Add to cart
 </button>
 {{/each}}

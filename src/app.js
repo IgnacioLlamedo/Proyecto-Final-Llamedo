@@ -40,21 +40,11 @@ Ejemplo de producto
     "stock": 1,
     "category": "category"
 } 
+Ejemplo user
+{
+    "email": "b@mail.com",
+    "password": "123",
+    "username": "nameApi"
+} 
 */
 
-/* There's a key difference between lean() and toObject() - toObject() converts a mongoose document into a POJO, 
-lean() makes it so that you never get a mongoose document and just get a POJO. 
-Mongoose documents have a lot under the hood and that comes with performance impact, 
-so lean() lets you bypass the performance overhead, but you miss out on most of the benefits of using mongoose. 
-Most of the time you just want to use .toObject() unless you're really starving for extra performance. */
-
-/* .Capas:
-          daos
-
-          daos = data access object, operaciones CRUD
-          archivo index en el que se elige el tipo de persistencia
-
-          capa de routers: routers, controlers, middlewares
-          capa persistencia: daos, models(mongoose schemas)
-          capa negocio: funciones, logica, programacion
-*/

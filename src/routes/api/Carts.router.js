@@ -3,16 +3,14 @@ import { getController, postController, addProductController, deleteProductContr
 
 export const cartsRouter = express.Router()
 
-cartsRouter.use(express.json)
-
 cartsRouter.post('/', postController)
 
-cartsRouter.post('/:cid/products/:pid', addProductController)
+cartsRouter.put('/:cid?/addproducts/:pid', addProductController)
 
 cartsRouter.get('/', getController)
 
 cartsRouter.get('/:cid', populateController)
 
-cartsRouter.put('/:cid', emptyController)
+cartsRouter.put('/:cid?', emptyController)
 
-cartsRouter.put('/:cid/products/:pid', deleteProductController)
+cartsRouter.put('/:cid?/delproducts/:pid', deleteProductController)

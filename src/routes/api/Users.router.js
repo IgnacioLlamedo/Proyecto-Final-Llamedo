@@ -1,14 +1,12 @@
 import express from "express";
-import { postController as register, getController as list, getCurrentController as current, updateController as upd } from "../../controllers/User.Controller.js";
+import { postController, getController, getCurrentController, updateController } from "../../controllers/User.Controller.js";
 
 export const usersRouter = express.Router()
 
-usersRouter.use(express.json)
+usersRouter.post('/', postController)
 
-usersRouter.post('/', register)
+usersRouter.get('/', getController)
 
-usersRouter.get('/', list)
+usersRouter.get('/current', getCurrentController)
 
-usersRouter.get('/current', current)
-
-usersRouter.put('/', upd)
+usersRouter.put('/', updateController)

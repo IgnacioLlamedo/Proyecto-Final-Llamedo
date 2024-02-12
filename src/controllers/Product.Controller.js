@@ -11,7 +11,6 @@ export async function postController(req, res, next){
 
 export async function getController(req, res, next){
     try{
-        console.log("controller")
         res.json(await productDao.readMany(req.query))
     }
     catch(error){

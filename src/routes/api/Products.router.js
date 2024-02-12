@@ -3,8 +3,6 @@ import { getController, postController, deleteController, updateController} from
 
 export const productsRouter = express.Router()
 
-productsRouter.use(express.json)
-
 productsRouter.get('/:pid?', getController)
 
 productsRouter.post('/', postController)

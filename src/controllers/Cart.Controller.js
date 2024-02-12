@@ -26,7 +26,12 @@ export async function getController(req, res, next){
 
 export async function emptyController(req, res, next){
     try{
-        res.status(202).json(await cartDao.updateOne({ _id: req.params.cid }, []))
+        if(req.params.cid){
+            res.status(202).json(await cartDao.updateOne({ _id: req.params.cid }, []))
+        }
+        else{
+            res.status(202).json(await cartDao.updateOne({ _id: req.user.cartId }, []))
+        }
     }
     catch(error){
         next(error)
@@ -35,7 +40,12 @@ export async function emptyController(req, res, next){
 
 export async function addProductController(req, res, next){
     try{
-        res.status(201).json(await cartService.addProduct(req.params.cid, req.params.pid))
+        if(req.params.cid){
+            res.status(201).json(await cartService.addProduct(req.params.pid, req.params.cid))
+        }
+        else{
+            res.status(201).json(await cartService.addProduct(req.params.pid, req.user.cartId))
+        }
     }
     catch(error){
         next(error)
@@ -44,7 +54,14 @@ export async function addProductController(req, res, next){
 
 export async function deleteProductController(req, res, next){
     try{
-        res.status(202).json(await cartService.deleteProduct(req.parms.cid, req.params.pid))
+        if(req.params.cid){
+            console.log("contoller " + req.params.cid)
+            res.status(202).json(await cartService.deleteProduct(req.params.pid, req.params.cid))
+            console.log("controller " + await cartService.deleteProduct(req.params.pid, req.params.cid))
+        }
+        else{
+            res.status(202).json(await cartService.deleteProduct(req.params.pid, req.user.cartId))
+        }
     }
     catch(error){
         next(error)
@@ -53,7 +70,12 @@ export async function deleteProductController(req, res, next){
 
 export async function populateController(req, res, next){
     try{
-        res.json(await cartDao.populate({ _id: req.params.cid }))
+        if(req.params.cid){
+            res.json(await cartDao.populate({ _id: req.params.cid }))
+        }
+        else{
+            res.json(await cartDao.populate({ _id: req.user.cartId }))
+        }
     }
     catch(error){
         next(error)

@@ -1,6 +1,5 @@
 import {Schema, model} from "mongoose"
 import { randomUUID } from 'crypto'
-import { Product } from "./Product.Mongoose.js"
 
 const collection = 'carts'
 
@@ -16,7 +15,7 @@ const cartSchema = new Schema({
 })
 
 cartSchema.pre('find', function(next){
-    this.populate('cart.$.productId')
+    this.populate('products.productID')
     next()
 })
 

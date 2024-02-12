@@ -1,40 +1,47 @@
 import { Cart } from "../models/Cart.Mongoose.js";
 
 export class cartDao {
-    async create(){
-        const cart = await Cart.create()
+    async create(cid){
+        const data = {
+            _id: cid
+        }
+        const cart = await Cart.create(data)
         return cart.toObject()
     }
     async readOne(query){
-        const cart = await Cart.findOne(query).lean()
+        console.log("dao read " + query)
+        const cart = await Cart.findOne({ _id: query }).lean()
+        console.log("dao read " + cart)
         if(!cart){
             throw new Error('Cart Not Found')
         }
-        return product
+        return cart
     }
     async readMany(query){
         return await Cart.find(query).lean()
     }
     async updateOne(query, newData){
-        const updated = await Cart.findOneAndUpdate(query, newData, { new: true }).lean()
+        console.log("dao update " + query)
+        console.log("dao update " + newData)
+        const updated = await Cart.findOneAndUpdate({ _id: query }, newData, { new: true }).lean()
         if(!updated){
             throw new Error('Cart Not Found')
         }
         return updated
     }
     async deleteOne(query){
-        const deleted = await Cart.findOneAndDelete(query).lean()
+        const deleted = await Cart.findOneAndDelete({ _id: query }).lean()
         if(!deleted){
             throw new Error('Cart Not Found')
         }
         return deleted
     }
     async populate(query){
-        const cart = await Cart.findOne(query)
+        const cart = await Cart.find( query )
         if(!cart){
             throw new Error('Cart Not Found')
         }
-        return cart.populate('product.productId').lean()
+        return cart
     }
 }
 

@@ -5,8 +5,7 @@ export const sessionsRouter = Router()
 
 sessionsRouter.get('/login', function loginView(req, res){
     res.render('login', {
-        title: 'Login',
-        style: 'form.css'
+        title: 'Login'
     })
 })
 
