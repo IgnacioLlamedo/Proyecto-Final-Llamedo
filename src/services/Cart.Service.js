@@ -42,13 +42,12 @@ class cartService{
     async deleteProduct(pid, cid){
         let cart
         if(cid){
-            console.log("service " + cid)
             cart = await cartDao.readOne(cid)
-            console.log("service " + cart)
         }
         else{
             cart = await cartDao.readOne(req.user.cartId)
         }
+        await productDao.readOne(pid)
         let n = 0
         for (const product of cart.products) {
             if(product.productID === pid){
@@ -63,7 +62,6 @@ class cartService{
         }
         console.log("Product deleted")
         const updated = await cartDao.updateOne(cid, cart)
-        console.log("SERVICE update " + updated.products[0].quantity)
         return updated
     }
 }

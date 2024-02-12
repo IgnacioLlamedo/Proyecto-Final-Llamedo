@@ -9,9 +9,7 @@ export class cartDao {
         return cart.toObject()
     }
     async readOne(query){
-        console.log("dao read " + query)
         const cart = await Cart.findOne({ _id: query }).lean()
-        console.log("dao read " + cart)
         if(!cart){
             throw new Error('Cart Not Found')
         }
@@ -21,8 +19,6 @@ export class cartDao {
         return await Cart.find(query).lean()
     }
     async updateOne(query, newData){
-        console.log("dao update " + query)
-        console.log("dao update " + newData)
         const updated = await Cart.findOneAndUpdate({ _id: query }, newData, { new: true }).lean()
         if(!updated){
             throw new Error('Cart Not Found')

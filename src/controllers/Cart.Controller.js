@@ -55,9 +55,7 @@ export async function addProductController(req, res, next){
 export async function deleteProductController(req, res, next){
     try{
         if(req.params.cid){
-            console.log("contoller " + req.params.cid)
             res.status(202).json(await cartService.deleteProduct(req.params.pid, req.params.cid))
-            console.log("controller " + await cartService.deleteProduct(req.params.pid, req.params.cid))
         }
         else{
             res.status(202).json(await cartService.deleteProduct(req.params.pid, req.user.cartId))

@@ -12,7 +12,7 @@
     <li>Category : {{this.productID.category}}</li>
     <li>Quantity: {{this.quantity}}</li>
 </div>
-<button onclick="del('{{this._id}}', '{{../cartId}}')">
+<button onclick="del('{{this.productID._id}}', '{{../cartId}}')">
     Delete product
 </button>
 {{/each}}

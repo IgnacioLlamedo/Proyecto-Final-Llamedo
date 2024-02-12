@@ -28,6 +28,8 @@ app.use(authentication)
 app.use('/api', apiRouter)
 app.use('/', webRouter)
 
+/* falta arreglar el delete product from cart y TODO lo del ticket de orden */
+
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 
 /* 
