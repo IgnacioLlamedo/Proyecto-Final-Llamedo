@@ -10,6 +10,31 @@ import config from './config.js'
 
 const app = express()
 
+const array = []
+
+array.push({id: "1", quantity: 5})
+array.push({id: "2", quantity: 5})
+array.push({id: "3", quantity: 1})
+let n = 0
+for (const product of array){
+    if(product.id === "3"){
+        if(product.quantity > 1){
+            product.quantity --
+        }
+        else{
+            array.slice(0, n).concat(array.slice(n + 1))
+            const a1 = array.slice(0, n)
+            const a2 = array.slice(n + 1)
+            console.log(a1)
+            console.log(a2)
+            const upd = a1.concat(a2)
+            console.log(upd)
+        }
+    }
+    n ++
+}
+console.log(array)
+
 app.listen(config.port, () => {
     console.log(`Listening in port ${config.port}`)
 })

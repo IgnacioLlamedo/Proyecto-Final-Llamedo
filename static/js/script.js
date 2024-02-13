@@ -7,11 +7,11 @@ function add(pid, cid){
     })
 }
 
-function del(pid, cid){
+async function del(pid, cid){
     console.log("del")
     console.log("pid: " + pid + " type: " + typeof(pid))
     console.log("cid: " + cid + " type: " + typeof(cid))
-    fetch(`/api/carts/${cid}/delproducts/${pid}`, {
+    await fetch(`/api/carts/${cid}/delproducts/${pid}`, {
         method: 'put'
     })
     location.reload()

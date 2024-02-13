@@ -56,6 +56,8 @@ class cartService{
                 }
                 else{
                     cart.products.slice(0, n).concat(cart.products.slice(n + 1))
+                    cart.products = []
+                    console.log(cart)
                 }
             }
             n ++
