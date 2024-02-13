@@ -1,14 +1,8 @@
-import { cartDao, productDao } from "../daos/index.js";
+import { cartDao, productDao, ticketDao } from "../daos/index.js";
 
 class cartService{
     async addProduct(pid, cid){
-        let cart
-        if(cid){
-            cart = await cartDao.readOne(cid)
-        }
-        else{
-            cart = await cartDao.readOne(req.user.cartId)
-        }
+        const cart = await cartDao.readOne(cid)
         await productDao.readOne(pid)
         if(cart.products.length === 0){
             cart.products.push({
@@ -40,13 +34,7 @@ class cartService{
         return updated
     }
     async deleteProduct(pid, cid){
-        let cart
-        if(cid){
-            cart = await cartDao.readOne(cid)
-        }
-        else{
-            cart = await cartDao.readOne(req.user.cartId)
-        }
+        let cart = await cartDao.readOne(cid)
         await productDao.readOne(pid)
         let n = 0
         for (const product of cart.products) {
@@ -56,7 +44,9 @@ class cartService{
                 }
                 else{
                     cart.products.slice(0, n).concat(cart.products.slice(n + 1))
-                    cart.products = []
+                    const a1 = cart.products.slice(0, n)
+                    const a2 = cart.products.slice(n + 1)
+                    cart.products = a1.concat(a2)
                     console.log(cart)
                 }
             }
@@ -65,6 +55,39 @@ class cartService{
         console.log("Product deleted")
         const updated = await cartDao.updateOne(cid, cart)
         return updated
+    }
+    async purchase(cid){
+        const array = []
+        let cart = (await cartDao.populate({ _id: cid }))[0]
+        console.log(cart.products)
+        for (const product of cart.products){
+            if(product.quantity > product.productID.stock){
+                array.push(product)
+            }
+            else{
+                const newData = {
+                    stock: product.productID.stock - product.quantity
+                }
+                await productDao.updateOne(product.productID._id, newData)
+            }
+        }
+        if(array.length !== 0){
+            
+        }
+        cart.products = array
+        await cartDao.updateOne(cart._id, cart)
+        /* 
+            cart.products = [
+                {
+                    productID: {
+                        _id: string
+                        stock: number
+                        price: number
+                    }
+                    quantity: number
+                }
+            ] 
+        */
     }
 }
 

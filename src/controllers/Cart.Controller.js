@@ -79,3 +79,19 @@ export async function populateController(req, res, next){
         next(error)
     }
 }
+
+export async function purchaseController(req, res, next){
+    try{
+        if(req.params.cid){
+            res.json(await cartService.purchase(req.params.cid))
+        }
+        else{
+            res.json(await cartService.purchase(req.user.cartId))
+        }
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+

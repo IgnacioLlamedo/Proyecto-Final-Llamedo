@@ -10,8 +10,7 @@ import config from './config.js'
 
 const app = express()
 
-const array = []
-
+/* let array = []
 array.push({id: "1", quantity: 5})
 array.push({id: "2", quantity: 5})
 array.push({id: "3", quantity: 1})
@@ -29,11 +28,12 @@ for (const product of array){
             console.log(a2)
             const upd = a1.concat(a2)
             console.log(upd)
+            array = upd
         }
     }
     n ++
 }
-console.log(array)
+console.log(array) */
 
 app.listen(config.port, () => {
     console.log(`Listening in port ${config.port}`)
@@ -53,7 +53,20 @@ app.use(authentication)
 app.use('/api', apiRouter)
 app.use('/', webRouter)
 
-/* falta arreglar el delete product from cart y TODO lo del ticket de orden */
+/* 
+    Falta TODO lo del ticket de orden ç
+        ticket: {
+            _id: autogenerado
+            code: string, único
+            purchase_datetime: fecha y hora de la compra
+            amount: número, precio total de la compra
+            purchaser: string, mail del usuario que compro
+        }
+        Ruta /:cid/purchase en cartRouter
+            Debe corroborar el stock de los productos
+                Si el stock es suficiente este debe ser actualizado al finalizar la compra
+                Si el stock no es suficiente se deben comprar todos los productos que si tegan suficiente stock, dejando los que no tienen suficiente en el carrito
+*/
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 

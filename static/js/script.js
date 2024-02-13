@@ -17,5 +17,11 @@ async function del(pid, cid){
     location.reload()
 }
 
-
+async function buy(cid){
+    console.log(cid)
+    await fetch(`/purchase`, {
+        method: 'post'
+    })
+    location.replace('/purchase')
+}
 

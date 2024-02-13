@@ -4,10 +4,11 @@ import { randomUUID } from 'crypto'
 const collection = 'carts'
 
 const cartSchema = new Schema({
-    _id: { type: String, default : randomUUID },
+    _id: { type: String, default: randomUUID },
     products : [{
-        productID: { type: String, ref: 'products'},
-        quantity: {type : Number}
+        productID: { type: String, ref: 'products' },
+        quantity: { type : Number },
+        _id: { type: String, default: randomUUID }
     }]
 },{
     versionKey: false,

@@ -15,3 +15,5 @@ webRouter.use(sessionsRouter)
 webRouter.use(usersRouter)
 
 webRouter.get('/', (req, res) => { return res.redirect('/login') })
+
+webRouter.get('/home', (req, res) => { return res.redirect('/products') })
