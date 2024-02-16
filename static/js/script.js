@@ -22,6 +22,6 @@ async function buy(cid){
     await fetch(`/purchase`, {
         method: 'post'
     })
-    location.replace('/purchase')
+    /* location.assign('/purchase') */
 }
 

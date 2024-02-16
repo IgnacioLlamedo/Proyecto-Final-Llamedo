@@ -82,11 +82,14 @@ export async function populateController(req, res, next){
 
 export async function purchaseController(req, res, next){
     try{
-        if(req.params.cid){
-            res.json(await cartService.purchase(req.params.cid))
+        const ticket = await cartService.purchase(req.user.cartId, req.user.email)
+        if (ticket){
+            console.log(ticket)
+            /* res.redirect('/home') */
+            res.location('/home')
         }
         else{
-            res.json(await cartService.purchase(req.user.cartId))
+            res.redirect('/purchase/error')
         }
     }
     catch(error){

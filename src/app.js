@@ -34,6 +34,8 @@ for (const product of array){
     n ++
 }
 console.log(array) */
+const fecha = new Date()
+const date = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear() + ' at ' + fecha.getHours() + ':' + fecha.getMinutes()
 
 app.listen(config.port, () => {
     console.log(`Listening in port ${config.port}`)

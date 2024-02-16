@@ -19,5 +19,16 @@ cartsRouter.get('/cart', async (req, res) => {
 cartsRouter.post('/:cid?/purchase', purchaseController)
 
 cartsRouter.get('/purchase', async (req, res) => {
-    res.render('')
+    /* res.render('purchase',
+    {   
+        title: 'Purchase Ticket'
+    }) */
+    res.redirect('/purchase/error')
+})
+
+cartsRouter.get('/purchase/error', async (req, res) => {
+    res.render('failed',
+    {   
+        title: 'Purchase Error'
+    })
 })

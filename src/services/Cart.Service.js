@@ -47,7 +47,6 @@ class cartService{
                     const a1 = cart.products.slice(0, n)
                     const a2 = cart.products.slice(n + 1)
                     cart.products = a1.concat(a2)
-                    console.log(cart)
                 }
             }
             n ++
@@ -56,38 +55,38 @@ class cartService{
         const updated = await cartDao.updateOne(cid, cart)
         return updated
     }
-    async purchase(cid){
+    async purchase(cid, mail){
         const array = []
+        const date = new Date()
+        const datetime = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' at ' + date.getHours() + ':' + date.getMinutes()
+        const ticketData = {
+            purchase_datetime: datetime,
+            amount: this.amount,
+            purchaser: mail
+        }
+        ticketData.amount = 0
         let cart = (await cartDao.populate({ _id: cid }))[0]
-        console.log(cart.products)
         for (const product of cart.products){
             if(product.quantity > product.productID.stock){
                 array.push(product)
             }
             else{
+                ticketData.amount = ticketData.amount + (product.quantity * product.productID.price)
                 const newData = {
                     stock: product.productID.stock - product.quantity
                 }
                 await productDao.updateOne(product.productID._id, newData)
             }
         }
-        if(array.length !== 0){
-            
+        if (ticketData.amount === 0){
+            return null
         }
-        cart.products = array
-        await cartDao.updateOne(cart._id, cart)
-        /* 
-            cart.products = [
-                {
-                    productID: {
-                        _id: string
-                        stock: number
-                        price: number
-                    }
-                    quantity: number
-                }
-            ] 
-        */
+        else{
+            const ticket = await ticketDao.create(ticketData)
+            cart.products = array
+            await cartDao.updateOne(cart._id, cart)
+            return ticket
+        }
     }
 }
 
