@@ -83,10 +83,10 @@ export async function populateController(req, res, next){
 export async function purchaseController(req, res, next){
     try{
         if(req.params.cid){
-            res.json(await cartService.purchase(req.params.cid, req.use.email))
+            res.json(await cartService.purchase(req.params.cid, req.user.email))
         }
         else{
-            res.json(await cartService.purchase(req.params.cid, req.use.email))
+            res.json(await cartService.purchase(req.user.cartId, req.user.email))
         }
     }
     catch(error){
@@ -96,14 +96,14 @@ export async function purchaseController(req, res, next){
 
 export async function purchaseControllerWeb(req, res, next){
     try{
-        console.log(req.user.email)
         const ticket = await cartService.purchase(req.user.cartId, req.user.email)
+        const cart = await cartDao.readOne(req.user.cartId)
         if (ticket){
-            console.log(ticket)
-            /* res.redirect('/home') */
             res.render('purchase',
             {   
-                title: 'Purchase Ticket'
+                title: 'Purchase Ticket',
+                warning: cart.products.length > 0,
+                ticket
             })
         }
         else{

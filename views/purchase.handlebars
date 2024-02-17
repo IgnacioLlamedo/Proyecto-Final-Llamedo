@@ -1,3 +1,13 @@
 <h2>Purchase Ticket</h2>
 <a href="/products">Home</a>
 <a href="/cart">Cart</a>
+{{#if warning}}
+<h2>Could not buy some products, not enough stock (they are still in the cart)</h2>
+{{/if}}
+<ul>
+    <li>Purchaser: {{ticket.purchaser}}</li>
+    <li>Total amount: {{ticket.amount}}</li>
+    <li>Date: {{ticket.purchase_datetime}}</li>
+    <li>Ticket code: {{ticket.code}}</li>
+</ul>
+
