@@ -1,6 +1,6 @@
 import express from "express";
 import { Cart } from "../../models/Cart.Mongoose.js";
-import { purchaseController } from "../../controllers/Cart.Controller.js";
+import { purchaseController, purchaseControllerWeb } from "../../controllers/Cart.Controller.js";
 
 export const cartsRouter = express.Router()
 
@@ -16,15 +16,7 @@ cartsRouter.get('/cart', async (req, res) => {
     })
 })
 
-cartsRouter.post('/:cid?/purchase', purchaseController)
-
-cartsRouter.get('/purchase', async (req, res) => {
-    /* res.render('purchase',
-    {   
-        title: 'Purchase Ticket'
-    }) */
-    res.redirect('/purchase/error')
-})
+cartsRouter.get('/purchase', purchaseControllerWeb)
 
 cartsRouter.get('/purchase/error', async (req, res) => {
     res.render('failed',

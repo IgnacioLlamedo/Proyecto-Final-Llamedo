@@ -19,9 +19,9 @@ async function del(pid, cid){
 
 async function buy(cid){
     console.log(cid)
-    await fetch(`/purchase`, {
+    await fetch(`/api/carts/purchase`, {
         method: 'post'
     })
-    /* location.assign('/purchase') */
+    location.assign('/purchase')
 }
 

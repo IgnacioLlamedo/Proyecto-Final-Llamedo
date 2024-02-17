@@ -1,5 +1,5 @@
 import express from "express";
-import { getController, postController, addProductController, deleteProductController, emptyController, populateController } from "../../controllers/Cart.Controller.js";
+import { getController, postController, addProductController, deleteProductController, emptyController, populateController, purchaseController } from "../../controllers/Cart.Controller.js";
 
 export const cartsRouter = express.Router()
 
@@ -14,3 +14,5 @@ cartsRouter.get('/:cid', populateController)
 cartsRouter.put('/:cid?', emptyController)
 
 cartsRouter.put('/:cid?/delproducts/:pid', deleteProductController)
+
+cartsRouter.post('/:cid?/purchase', purchaseController)
