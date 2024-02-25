@@ -9,7 +9,7 @@ sessionsRouter.post('/',
         failWithError: true
     }),
     function(req, res){
-        res.status(201).json({ status: 'succes', payload: req.user })
+        res.status(201).json({ status: 'success', payload: req.user })
     },
     function(error, req, res, next){
         res.status(401).json({ status: 'error', message: 'Login failed' })

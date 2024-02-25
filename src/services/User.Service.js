@@ -10,7 +10,7 @@ class userService{
         return user
     }
     async readOne(username, password){
-        const user = await userDao.readOne({ email: username })
+        const user = await userDao.readOne(username)
         if(!compareHash(password, user['password'])){
             throw new Error('Login failed')
         }

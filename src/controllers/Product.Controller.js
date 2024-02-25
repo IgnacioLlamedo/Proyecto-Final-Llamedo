@@ -20,17 +20,25 @@ export async function getController(req, res, next){
 
 export async function getControllerWeb(req, res, next){
     try{
-        const products = await productDao.readMany(req.query)
-        const cartId = req.user.cartId
-        res.render('home', 
-        { 
-            title: 'Products',
-            productsExist: products.length > 0,
-            products,
-            cartId,
-            style: 'home.css',
-            user: req.user
-        })
+        if(req.user.role === 'user'){
+            const products = await productDao.readMany(req.query)
+            const cartId = req.user.cartId
+            res.render('home', 
+            { 
+                title: 'Products',
+                productsExist: products.length > 0,
+                products,
+                cartId,
+                style: 'home.css',
+                user: req.user
+            })
+        }
+        else{
+            res.render('admin', 
+            { 
+                title: 'Admin'
+            })
+        }
     }
     catch(error){
         next(error)
