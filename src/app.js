@@ -56,6 +56,7 @@ app.use('/', webRouter)
 /* 
     Generar un módulo de mocking que al iniciar genere y entregue 100 productos, solo en un endpoint '/mockingproducts'
     Generar un customizador de errores y crear un diccionario de errores comunes (crear producto, agregar producto al carrito, etc.)
+    errores en ruta models/errors
 */
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
