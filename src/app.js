@@ -7,6 +7,7 @@ import Handlebars from 'handlebars'
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { authentication } from './middlewares/passport.js'
 import config from './config.js'
+import { mockingRouter } from './mock.js'
 
 const app = express()
 
@@ -52,6 +53,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(authentication)
 app.use('/api', apiRouter)
 app.use('/', webRouter)
+
+app.use('/mockingproducts', mockingRouter)
 
 /* 
     Generar un módulo de mocking que al iniciar genere y entregue 100 productos, solo en un endpoint '/mockingproducts'
