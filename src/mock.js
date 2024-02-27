@@ -14,6 +14,7 @@ async function createFor(){
             category: 'mock'
         })
     }
+    return await productDao.readMany()
 }
 
 async function deleteFor(){
@@ -24,20 +25,29 @@ async function deleteFor(){
             await productDao.deleteOne(product._id)
         }
     }
+    return await productDao.readMany()
 }
 
-async function createMock(){
-    const products = await createFor()
-    return products
+async function createMock(req, res, next){
+    try{
+        res.json(await createFor())
+    }
+    catch(error){
+        next(error)
+    }
 }
 
-async function deleteMock(){
-    const products = await deleteFor()
-    return products
+async function deleteMock(req, res, next){
+    try{
+        res.json(await deleteFor())
+    }
+    catch(error){
+        next(error)
+    }
 }
 
 export const mockingRouter = Router()
 
 mockingRouter.post('/', createMock)
 
-mockingRouter.delete('/delete', deleteMock)
+mockingRouter.delete('/', deleteMock)

@@ -59,8 +59,6 @@ passport.use('login', new LocalStrategy({
   usernameField: 'email'
 }, async (email, password, done) => {
   try{
-    console.log(email)
-    console.log(password)
     const userData = await userService.readOne(email, password)
     done(null, userData)
   }

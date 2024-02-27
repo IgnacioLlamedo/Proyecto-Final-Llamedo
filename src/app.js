@@ -56,10 +56,6 @@ app.use('/', webRouter)
 
 app.use('/mockingproducts', mockingRouter)
 
-/* 
-    Generar un módulo de mocking que al iniciar genere y entregue 100 productos, solo en un endpoint '/mockingproducts'
-*/
-
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 
 /* 
