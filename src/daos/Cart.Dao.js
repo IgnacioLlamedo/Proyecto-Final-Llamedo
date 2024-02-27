@@ -1,4 +1,5 @@
 import { Cart } from "../models/Cart.Mongoose.js";
+import { NotFoundError } from "../models/errors/notFound.error.js";
 
 export class cartDao {
     async create(cid){
@@ -11,7 +12,7 @@ export class cartDao {
     async readOne(query){
         const cart = await Cart.findOne({ _id: query }).lean()
         if(!cart){
-            throw new Error('Cart Not Found')
+            throw new NotFoundError('Cart')
         }
         return cart
     }
@@ -21,21 +22,21 @@ export class cartDao {
     async updateOne(query, newData){
         const updated = await Cart.findOneAndUpdate({ _id: query }, newData, { new: true }).lean()
         if(!updated){
-            throw new Error('Cart Not Found')
+            throw new NotFoundError('Cart')
         }
         return updated
     }
     async deleteOne(query){
         const deleted = await Cart.findOneAndDelete({ _id: query }).lean()
         if(!deleted){
-            throw new Error('Cart Not Found')
+            throw new NotFoundError('Cart')
         }
         return deleted
     }
     async populate(query){
         const cart = await Cart.find( query )
         if(!cart){
-            throw new Error('Cart Not Found')
+            throw new NotFoundError('Cart')
         }
         return cart
     }

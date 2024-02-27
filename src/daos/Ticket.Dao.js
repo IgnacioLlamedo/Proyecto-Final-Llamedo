@@ -1,4 +1,5 @@
 import { Ticket } from "../models/Ticket.Mongoose.js";
+import { NotFoundError } from "../models/errors/notFound.error.js";
 
 export class ticketDao {
     async create(ticketData){
@@ -8,7 +9,7 @@ export class ticketDao {
     async readOne(query){
         const ticket = await Ticket.findOne({ _id: query }).lean()
         if(!ticket){
-            throw new Error('Ticket Not Found')
+            throw new NotFoundError('Ticket')
         }
         return ticket
     }
@@ -18,14 +19,14 @@ export class ticketDao {
     async updateOne(query, newData){
         const updated = await Ticket.findOneAndUpdate({ _id: query }, newData, { new: true }).lean()
         if(!updated){
-            throw new Error('Ticket Not Found')
+            throw new NotFoundError('Ticket')
         }
         return updated
     }
     async deleteOne(query){
         const deleted = await Ticket.findOneAndDelete({ _id: query }).lean()
         if(!deleted){
-            throw new Error('Ticket Not Found')
+            throw new NotFoundError('Ticket')
         }
         return deleted
     }
