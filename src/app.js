@@ -8,6 +8,9 @@ import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access
 import { authentication } from './middlewares/passport.js'
 import config from './config.js'
 import { mockingRouter } from './mock.js'
+import { logger } from './utils/logger.js'
+import { loggerInRequest } from './middlewares/logger.js'
+import { errorHandler } from './middlewares/error.handler.js'
 
 const app = express()
 
@@ -37,7 +40,7 @@ for (const product of array){
 console.log(array) */
 
 app.listen(config.port, () => {
-    console.log(`Listening in port ${config.port}`)
+    logger.info(`Listening in port ${config.port}`)
 })
 
 app.engine('handlebars', engine({
@@ -48,13 +51,30 @@ app.set('view engine', 'handlebars')
 
 app.use('/static', express.static('./static'))
 app.use(s)
-app.use(express.json())
+/* app.use(express.json()) */
 app.use(express.urlencoded({ extended: true }))
 app.use(authentication)
+app.use(loggerInRequest)
+app.use(errorHandler)
 app.use('/api', apiRouter)
 app.use('/', webRouter)
 
 app.use('/mockingproducts', mockingRouter)
+
+/*
+    Logger:
+        Niveles: menor a mayor
+            -debug
+            -http
+            -info
+            -warning
+            -error
+            -fatal
+        Un logger de desarrollo (nivel debug, solo consola) y un logger de produccion (nivel info)
+        Enviar un transporte de archivos a partir del nivel error en un nombre errors.log
+        Logs de valor alto en puntos importantes (errores, advertencias, etc) y reemplazar los console.log() con winston
+        Crear endpoint /loggerTest que permita probar los logs
+*/
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 
