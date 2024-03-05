@@ -1,9 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { Router } from "express";
 import { productDao } from "./daos/index.js";
+import { logger } from "./utils/logger.js";
 
 async function createFor(){
-    console.log('create')
+    logger.debug('create')
     for (let i = 0; i < 100; i++) {
         await productDao.create({
             title: faker.commerce.productName(),
@@ -18,7 +19,7 @@ async function createFor(){
 }
 
 async function deleteFor(){
-    console.log('delete')
+    logger.debug('delete')
     const products = await productDao.readMany()
     for (const product of products) {
         if (product.category === 'mock'){

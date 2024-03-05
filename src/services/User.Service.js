@@ -1,6 +1,7 @@
 import { userDao } from "../daos/index.js";
 import { hash, compareHash } from "../utils/crypt.js";
 import { cartDao } from "../daos/index.js";
+import { AuthError } from "../models/errors/auth.error.js";
 
 class userService{
     async create(userData){
@@ -12,7 +13,7 @@ class userService{
     async readOne(username, password){
         const user = await userDao.readOne(username)
         if(!compareHash(password, user['password'])){
-            throw new Error('Login failed')
+            throw new AuthError()
         }
         return user
     }
@@ -27,7 +28,7 @@ class userService{
             { new: true }
         )
         if(!updated){
-            throw new Error('Failed resetting password')
+            throw new AuthError()
         }
         return updated
     }

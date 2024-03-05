@@ -11,7 +11,12 @@ export async function postController(req, res, next){
 
 export async function getController(req, res, next){
     try{
-        res.json(await productDao.readMany(req.query))
+        if(req.params.pid){
+            res.json(await productDao.readOne(req.params.pid))
+        }
+        else{
+            res.json(await productDao.readMany(req.query))
+        }
     }
     catch(error){
         next(error)

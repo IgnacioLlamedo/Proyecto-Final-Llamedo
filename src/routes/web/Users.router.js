@@ -2,7 +2,6 @@ import { Router } from "express";
 import { updateController } from "../../controllers/User.Controller.js";
 import { logWeb } from "../../middlewares/auth.js";
 import passport from "passport";
-import { cartDao } from "../../daos/index.js";
 
 export const usersRouter = Router()
 

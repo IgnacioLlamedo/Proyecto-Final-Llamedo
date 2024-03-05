@@ -14,31 +14,6 @@ import { errorHandler } from './middlewares/error.handler.js'
 
 const app = express()
 
-/* let array = []
-array.push({id: "1", quantity: 5})
-array.push({id: "2", quantity: 5})
-array.push({id: "3", quantity: 1})
-let n = 0
-for (const product of array){
-    if(product.id === "3"){
-        if(product.quantity > 1){
-            product.quantity --
-        }
-        else{
-            array.slice(0, n).concat(array.slice(n + 1))
-            const a1 = array.slice(0, n)
-            const a2 = array.slice(n + 1)
-            console.log(a1)
-            console.log(a2)
-            const upd = a1.concat(a2)
-            console.log(upd)
-            array = upd
-        }
-    }
-    n ++
-}
-console.log(array) */
-
 app.listen(config.port, () => {
     logger.info(`Listening in port ${config.port}`)
 })
@@ -51,7 +26,7 @@ app.set('view engine', 'handlebars')
 
 app.use('/static', express.static('./static'))
 app.use(s)
-/* app.use(express.json()) */
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(authentication)
 app.use(loggerInRequest)
@@ -60,21 +35,6 @@ app.use('/api', apiRouter)
 app.use('/', webRouter)
 
 app.use('/mockingproducts', mockingRouter)
-
-/*
-    Logger:
-        Niveles: menor a mayor
-            -debug
-            -http
-            -info
-            -warning
-            -error
-            -fatal
-        Un logger de desarrollo (nivel debug, solo consola) y un logger de produccion (nivel info)
-        Enviar un transporte de archivos a partir del nivel error en un nombre errors.log
-        Logs de valor alto en puntos importantes (errores, advertencias, etc) y reemplazar los console.log() con winston
-        Crear endpoint /loggerTest que permita probar los logs
-*/
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 

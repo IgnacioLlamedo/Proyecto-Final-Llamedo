@@ -1,4 +1,5 @@
 import { cartDao, productDao, ticketDao } from "../daos/index.js";
+import { logger } from "../utils/logger.js";
 
 class cartService{
     async addProduct(pid, cid){
@@ -30,7 +31,7 @@ class cartService{
             }
         }
         const updated = await cartDao.updateOne(cid, cart)
-        console.log("Product added")
+        logger.info('Product added')
         return updated
     }
     async deleteProduct(pid, cid){
@@ -51,14 +52,14 @@ class cartService{
             }
             n ++
         }
-        console.log("Product deleted")
+        logger.info('Product deleted')
         const updated = await cartDao.updateOne(cid, cart)
         return updated
     }
     async purchase(cid, mail){
         const array = []
         const date = new Date()
-        const datetime = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' at ' + date.getHours() + ':' + date.getMinutes()
+        const datetime = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' at ' + date.toLocaleTimeString()
         const ticketData = {
             purchase_datetime: datetime,
             amount: this.amount,

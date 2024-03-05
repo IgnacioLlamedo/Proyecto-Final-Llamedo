@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { logger } from "../../utils/logger.js";
 
 export const sessionsRouter = Router()
 
@@ -30,7 +31,7 @@ sessionsRouter.get('/githubcallback',
 sessionsRouter.post('/logout', (req, res) => {
     req.logOut(error => {
         if(error){
-            console.log(error)
+            logger.error(error)
         }
         res.redirect('/login')
     })
