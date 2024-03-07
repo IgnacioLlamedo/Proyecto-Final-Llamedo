@@ -11,6 +11,8 @@ import { mockingRouter } from './mock.js'
 import { logger } from './utils/logger.js'
 import { loggerInRequest } from './middlewares/logger.js'
 import { errorHandler } from './middlewares/error.handler.js'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
 
 const app = express()
 
@@ -35,6 +37,26 @@ app.use('/api', apiRouter)
 app.use('/', webRouter)
 
 app.use('/mockingproducts', mockingRouter)
+
+const swaggerOptions = {
+    definition:{
+        openapi: '3.0.1',
+        info:{
+            title:'E-commerce Backend',
+            version: '1.0',
+            description:'Description'
+        }
+    },
+    apis:['./docs/**/*.yaml']
+}
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
+/*
+    Documentar api:
+        Products
+        Carts
+*/
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 
