@@ -55,7 +55,10 @@ app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 /*
     Documentar api:
         Products
+            product schema X
         Carts
+            cart schema
+            ticket schema
 */
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
