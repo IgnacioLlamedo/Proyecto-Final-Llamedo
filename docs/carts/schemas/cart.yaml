@@ -1,1 +1,20 @@
-a
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Users id
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productID:
+                type: string
+                description: The id of the product, that is later populated to get the full product
+              quantity:
+                type: number
+                description: The quantity of the product
+          description: All the products in the cart

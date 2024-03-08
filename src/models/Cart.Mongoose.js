@@ -1,6 +1,5 @@
 import {Schema, model} from "mongoose"
 import { randomUUID } from 'crypto'
-//a
 
 const collection = 'carts'
 

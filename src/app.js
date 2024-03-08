@@ -55,12 +55,23 @@ app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 /*
     Documentar api:
         Products
-            product schema X
             product router
+                api/products
+                    get '/:pid?'
+                    post '/'
+                    put '/:pid'
+                    delete '/:pid'
         Carts
-            cart schema
             ticket schema
             cart router
+                api/carts
+                    get '/'
+                    get '/:cid'
+                    post '/'
+                    post '/:cid?/purchase'
+                    put '/:cid?/addproducts/:pid'
+                    put '/:cid?/delproducts/:pid'
+                    put '/:cid?'
 */
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
