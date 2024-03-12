@@ -1,0 +1,15 @@
+paths:
+  /api/carts:
+    get:
+      summary: Gets all carts
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: All carts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'

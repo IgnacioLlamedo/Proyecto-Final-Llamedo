@@ -1,0 +1,23 @@
+paths:
+  /api/carts/{cid}/delproducts/{pid}:
+    put:
+      summary: Deletes a product from the cart by id. If there is a session, the id of the cart searched is the user id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart id
+          type: string
+        - name: pid
+          in: path
+          description: Product id
+          type: string
+          required: true
+      responses:
+        "201":
+          description: The updated cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'

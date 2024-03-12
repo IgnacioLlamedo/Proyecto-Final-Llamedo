@@ -1,7 +1,7 @@
 paths:
   /api/products/{id}:
-    put:
-      summary: Updates one product by id
+    get:
+      summary: Gets one product by id
       tags:
         - Products
       parameters:
@@ -12,10 +12,10 @@ paths:
           type: string
       responses:
         "200":
-          description: The updated product
+          description: The requested product
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
         "404":
-          description: User not found
+          description: Product not found

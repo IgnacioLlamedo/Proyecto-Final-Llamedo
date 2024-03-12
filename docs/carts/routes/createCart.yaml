@@ -1,2 +1,13 @@
 paths:
-  /api/carts
+  /api/carts:
+    post:
+      summary: Creates a cart. If there is a session, the cart is created with the session and they share the same id
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: The created cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'

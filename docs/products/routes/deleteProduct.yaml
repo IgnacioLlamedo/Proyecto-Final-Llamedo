@@ -1,0 +1,21 @@
+paths:
+  /api/products/{id}:
+    delete:
+      summary: Deletes one product by id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: Path with the id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: The deleted product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: User not found

@@ -1,0 +1,26 @@
+paths:
+  /api/carts/{id}:
+    put:
+      summary: Updates one cart by id. If there is a session, the id serched is the user id
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          description: Path with the id
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/cartsData'
+      responses:
+        "200":
+          description: The updated product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: User not found

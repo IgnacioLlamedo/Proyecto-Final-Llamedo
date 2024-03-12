@@ -1,0 +1,18 @@
+paths:
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Purchases the products that are in the cart. If there is a session, the id of the cart searched is the user id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          description: Cart id
+          type: string
+      responses:
+        "201":
+          description: The ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
