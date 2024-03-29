@@ -39,7 +39,7 @@ export async function getControllerWeb(req, res, next){
             })
         }
         else{
-            res.render('admin', 
+            res.render('adminProduct', 
             { 
                 title: 'Admin'
             })

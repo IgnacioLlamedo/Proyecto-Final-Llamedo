@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { updateController } from "../../controllers/User.Controller.js";
+import { updateController, getAdminUsers } from "../../controllers/User.Controller.js";
 import { logWeb } from "../../middlewares/auth.js";
 import passport from "passport";
 
@@ -32,4 +32,6 @@ usersRouter.get('/profile', logWeb, function profileView(req, res){
         user: req.user
     })
 })
+
+usersRouter.get('/users', getAdminUsers)
 

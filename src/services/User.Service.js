@@ -18,7 +18,17 @@ class userService{
         return user
     }
     async readMany(query){
-        return await userDao.readMany(query)
+        const users = await userDao.readMany(query)
+        const usersPublicInfo = []
+        for (const user of users){
+            const userInfo = {
+                email: user.email,
+                username: user.username,
+                role: user.role
+            }
+            usersPublicInfo.push(userInfo)
+        }
+        return usersPublicInfo
     }
     async updateOne(email, password){
         const newPass = hash(password)

@@ -15,3 +15,16 @@ div{
     margin-top: 10px;
     margin-bottom: 10px;
 }
+.form2{
+    margin-left: 5%;
+    margin-top: 50px;
+}
+.form2 form{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.form2 form input{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

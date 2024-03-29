@@ -11,7 +11,12 @@ export async function postController(req, res, next){
 
 export async function getController(req, res, next){
     try{
-        res.json(await userService.readOne({ email: req.body.email }))
+        if(req.body.email){
+            res.json(await userService.readOne({ email: req.body.email }))
+        }
+        else{
+            res.json(await userService.readMany())
+        }
     }
     catch(error){
         next(error)
@@ -30,6 +35,25 @@ export async function updateController(req, res, next){
 export async function getCurrentController(req, res, next){
     try{
         return req.user
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+export async function getAdminUsers(req, res, next){
+    try{
+        if(req.user.role === 'user'){
+            res.redirect('/home')
+        }
+        else{
+            const users = await userService.readMany()
+            res.render('adminUser', 
+            { 
+                title: 'Admin',
+                users,
+            })
+        }
     }
     catch(error){
         next(error)
