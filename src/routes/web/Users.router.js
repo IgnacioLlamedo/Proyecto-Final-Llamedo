@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { updateController, getAdminUsers } from "../../controllers/User.Controller.js";
+import { resetPassControllerWeb, getAdminUsers } from "../../controllers/User.Controller.js";
 import { logWeb } from "../../middlewares/auth.js";
 import passport from "passport";
 
@@ -24,7 +24,7 @@ usersRouter.get('/resetpass', function resetPassView(req, res){
     })
 })
 
-usersRouter.post('/resetpass', updateController)
+usersRouter.post('/resetpass', resetPassControllerWeb)
 
 usersRouter.get('/profile', logWeb, function profileView(req, res){
     res.render('profile', {

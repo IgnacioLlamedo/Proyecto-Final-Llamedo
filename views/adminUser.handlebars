@@ -5,7 +5,14 @@
         <li>Username: {{this.username}}</li>
         <li>E-mail: {{this.email}}</li>
         <li>Role: {{this.role}}</li>
+        <button onclick="changeRole('{{this.email}}')">
+            Change role
+        </button>
+        <button onclick="deleteUser('{{this.email}}')">
+            Delete user
+        </button>
     </div>
     {{/each}}
+    <a href="/profile">Profile</a>
     <a href="/products">Products</a>
 </div>

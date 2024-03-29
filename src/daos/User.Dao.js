@@ -15,7 +15,7 @@ export class userDao {
     async readMany(query){
         return await User.find(query).lean()
     }
-    async updateOne(query){
+    async updateOne(query, newData){
         const updated = await User.findOneAndUpdate({ email: query }, newData, { new: true }).lean()
         if(!updated){
             throw new AuthError()

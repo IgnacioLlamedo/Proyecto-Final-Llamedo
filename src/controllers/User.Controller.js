@@ -23,9 +23,37 @@ export async function getController(req, res, next){
     }
 }
 
-export async function updateController(req, res, next){
+export async function resetPassController(req, res, next){
     try{
-        res.status(202).json(await userService.updateOne({ email:req.body.email }, req.body.password))
+        res.status(202).json(await userService.resetPass(req.body.email, req.body.password))
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+export async function resetPassControllerWeb(req, res, next){
+    try{
+        await userService.resetPass(req.body.email, req.body.password)
+        res.redirect('/login')
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+export async function changeRoleController(req, res, next){
+    try{
+        res.status(202).json(await userService.changeRole(req.params.email))
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+export async function deleteController(req, res, next){
+    try{
+        res.status(202).json(await userService.deleteOne(req.params.email))
     }
     catch(error){
         next(error)
