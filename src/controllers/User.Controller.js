@@ -44,7 +44,7 @@ export async function resetPassControllerWeb(req, res, next){
 
 export async function changeRoleController(req, res, next){
     try{
-        res.status(202).json(await userService.changeRole(req.params.email))
+        res.status(202).json(await userService.changeRole(req.params.email, req.params.role))
     }
     catch(error){
         next(error)

@@ -38,15 +38,7 @@ class userService{
         }
         return updated
     }
-    async changeRole(email){
-        const user = await userDao.readOne(email)
-        let newRole
-        if(user.role === 'user'){
-            newRole = 'admin'
-        }
-        else{
-            newRole = 'user'
-        }
+    async changeRole(email, newRole){
         const updated = await userDao.updateOne(email, {role: newRole})
         if(!updated){
             throw new AuthError()

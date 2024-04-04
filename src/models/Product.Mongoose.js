@@ -13,7 +13,8 @@ const productSchema = new Schema({
     status: { type: Boolean, default: true },
     stock: { type: Number, required: true },
     category: { type: String, required: true },
-    thumbnail: { type: String, default: config.prodImg }
+    thumbnail: { type: String, default: config.prodImg },
+    owner: { type: String, default: 'admin' }
 }, {
     versionKey: false,
     strict: 'throw'

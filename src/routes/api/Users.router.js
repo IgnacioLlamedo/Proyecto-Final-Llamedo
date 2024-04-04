@@ -13,4 +13,4 @@ usersRouter.put('/', resetPassController)
 
 usersRouter.delete('/:email', deleteController)
 
-usersRouter.put('/role/:email', changeRoleController)
+usersRouter.put('/role/:email/:role', changeRoleController)

@@ -25,10 +25,10 @@ async function buy(cid){
     location.assign('/purchase')
 }
 
-async function changeRole(email){
-    console.log('role')
+async function changeRole(email, role){
+    console.log('role: ' + role)
     console.log('email: ' + email)
-    await fetch(`/api/users/role/${email}`, {
+    await fetch(`/api/users/role/${email}/${role}`, {
         method: 'put'
     })
     location.reload()
