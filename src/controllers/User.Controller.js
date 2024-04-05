@@ -71,16 +71,21 @@ export async function getCurrentController(req, res, next){
 
 export async function getAdminUsers(req, res, next){
     try{
-        if(req.user.role === 'user'){
-            res.redirect('/home')
+        if(req.user){
+            if(req.user.role === 'admin'){
+                const users = await userService.readMany()
+                res.render('adminUser', 
+                { 
+                    title: 'Admin',
+                    users,
+                })
+            }
+            else{
+                res.redirect('/home')
+            }
         }
         else{
-            const users = await userService.readMany()
-            res.render('adminUser', 
-            { 
-                title: 'Admin',
-                users,
-            })
+            res.redirect('/login')
         }
     }
     catch(error){

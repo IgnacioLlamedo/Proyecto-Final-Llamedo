@@ -41,10 +41,10 @@ export async function emptyController(req, res, next){
 export async function addProductController(req, res, next){
     try{
         if(req.params.cid){
-            res.status(201).json(await cartService.addProduct(req.params.pid, req.params.cid))
+            res.status(201).json(await cartService.addProduct(req.params.pid, req.params.cid, req.user.email))
         }
         else{
-            res.status(201).json(await cartService.addProduct(req.params.pid, req.user.cartId))
+            res.status(201).json(await cartService.addProduct(req.params.pid, req.user.cartId, req.user.email))
         }
     }
     catch(error){
@@ -96,18 +96,28 @@ export async function purchaseController(req, res, next){
 
 export async function purchaseControllerWeb(req, res, next){
     try{
-        const ticket = await cartService.purchase(req.user.cartId, req.user.email)
-        const cart = await cartDao.readOne(req.user.cartId)
-        if (ticket){
-            res.render('purchase',
-            {   
-                title: 'Purchase Ticket',
-                warning: cart.products.length > 0,
-                ticket
-            })
+        if(req.user){
+            if(req.user.role === 'admin'){
+                const ticket = await cartService.purchase(req.user.cartId, req.user.email)
+                const cart = await cartDao.readOne(req.user.cartId)
+                if (ticket){
+                    res.render('purchase',
+                    {   
+                        title: 'Purchase Ticket',
+                        warning: cart.products.length > 0,
+                        ticket
+                    })
+                }
+                else{
+                    res.redirect('/purchase/error')
+                }
+            }
+            else{
+                res.redirect('/home')
+            }
         }
         else{
-            res.redirect('/purchase/error')
+            res.redirect('/login')
         }
     }
     catch(error){

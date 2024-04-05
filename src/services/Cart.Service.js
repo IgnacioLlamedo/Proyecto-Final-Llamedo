@@ -2,37 +2,39 @@ import { cartDao, productDao, ticketDao } from "../daos/index.js";
 import { logger } from "../utils/logger.js";
 
 class cartService{
-    async addProduct(pid, cid){
+    async addProduct(pid, cid, mail){
         const cart = await cartDao.readOne(cid)
-        await productDao.readOne(pid)
-        if(cart.products.length === 0){
-            cart.products.push({
-                productID: pid,
-                quantity: 1
-            })
-        }
-        else{
-            let boolean = false
-            for (const product of cart.products) {
-                if(product.productID === pid){
-                    product.quantity ++
-                    boolean = false
-                    break
-                }
-                else{
-                   boolean = true 
-                }
-            }
-            if(boolean){
+        const product = await productDao.readOne(pid)
+        if(product.owner !== mail){
+            if(cart.products.length === 0){
                 cart.products.push({
                     productID: pid,
                     quantity: 1
                 })
             }
+            else{
+                let boolean = false
+                for (const product of cart.products) {
+                    if(product.productID === pid){
+                        product.quantity ++
+                        boolean = false
+                        break
+                    }
+                    else{
+                       boolean = true 
+                    }
+                }
+                if(boolean){
+                    cart.products.push({
+                        productID: pid,
+                        quantity: 1
+                    })
+                }
+            }
+            const updated = await cartDao.updateOne(cid, cart)
+            logger.info('Product added')
+            return updated
         }
-        const updated = await cartDao.updateOne(cid, cart)
-        logger.info('Product added')
-        return updated
     }
     async deleteProduct(pid, cid){
         let cart = await cartDao.readOne(cid)

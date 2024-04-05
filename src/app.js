@@ -55,7 +55,6 @@ app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 /* 
     Ruta para borrar todos los usuarios que no tengan sesion reciente
     Hacer posible la venta
-    Usuarios premium: usuario premium solo puede borrar sus productos, admin puede borrar cualquier producto, los usuarios premium no pueden agregar al carrito sus productos
 */
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */

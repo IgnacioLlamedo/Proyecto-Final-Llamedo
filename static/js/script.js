@@ -42,3 +42,11 @@ async function deleteUser(email){
     })
     location.reload()
 }
+
+async function deleteProduct(pid){
+    console.log('delete product')
+    await fetch(`/api/products/${pid}`, {
+        method: 'delete'
+    })
+    location.reload()
+}

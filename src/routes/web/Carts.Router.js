@@ -5,22 +5,32 @@ import { purchaseController, purchaseControllerWeb } from "../../controllers/Car
 export const cartsRouter = express.Router()
 
 cartsRouter.get('/cart', async (req, res) => {
-    const cart = (await Cart.find({ _id: req.user.cartId }))[0]
-    const products = cart.products
-    res.render('cart', 
-    { 
-        title: 'Cart',
-        productsExist: products.length > 0,
-        products,
-        cartId: cart._id
-    })
+    if(req.user){
+        const cart = (await Cart.find({ _id: req.user.cartId }))[0]
+        const products = cart.products
+        res.render('cart', 
+        { 
+            title: 'Cart',
+            productsExist: products.length > 0,
+            products,
+            cartId: cart._id
+        })
+    }
+    else{
+        res.redirect('/login')
+    }
 })
 
 cartsRouter.get('/purchase', purchaseControllerWeb)
 
 cartsRouter.get('/purchase/error', async (req, res) => {
-    res.render('failed',
-    {   
-        title: 'Purchase Error'
-    })
+    if(req.user){
+        res.render('failed',
+        {   
+            title: 'Purchase Error'
+        })
+    }
+    else{
+        res.redirect('/login')
+    }
 })

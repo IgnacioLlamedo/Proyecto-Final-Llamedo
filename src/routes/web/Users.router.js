@@ -19,18 +19,28 @@ usersRouter.post('/register',
 )
 
 usersRouter.get('/resetpass', function resetPassView(req, res){
-    res.render('resetpass', {
-        title: 'Reset Password'
-    })
+    if(req.user){
+        res.render('resetpass', {
+            title: 'Reset Password'
+        })
+    }
+    else{
+        res.redirect('/login')
+    }
 })
 
 usersRouter.post('/resetpass', resetPassControllerWeb)
 
 usersRouter.get('/profile', logWeb, function profileView(req, res){
-    res.render('profile', {
-        title: 'Profile',
-        user: req.user
-    })
+    if(req.user){
+        res.render('profile', {
+            title: 'Profile',
+            user: req.user
+        })
+    }
+    else{
+        res.redirect('/login')
+    }
 })
 
 usersRouter.get('/users', getAdminUsers)

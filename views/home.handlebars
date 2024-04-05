@@ -42,9 +42,7 @@
 </div>
 {{/if}}
 <a href="/profile">Profile</a>
-{{#unless admin}}
 <a href="/cart">Cart</a>
-{{/unless}}
 {{#if productsExist}}
 <h2>Products</h2>
 <ul>
@@ -60,10 +58,26 @@
     <li>Status : {{this.status}}</li>
     <li>Stock : {{this.stock}}</li>
     <li>Category : {{this.category}}</li>
+    {{#if ../admin}}
+    <li>Owner : {{this.owner}}</li>
+    {{/if}}
+    {{#if ../premium}}
+    <li>Owner : {{this.owner}}</li>
+    {{/if}}
 </div>
 <button onclick="add('{{this._id}}', '{{../cartId}}')">
     Add to cart
 </button>
+{{#if ../admin}}
+<button onclick="deleteProduct('{{this._id}}')">
+    Delete product
+</button>
+{{/if}}
+{{#if ../premium}}
+<button onclick="deleteProduct('{{this._id}}')">
+    Delete product
+</button>
+{{/if}}
 {{/each}}
 </ul>
 {{else}}
