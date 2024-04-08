@@ -78,10 +78,18 @@ export async function getAdminUsers(req, res, next){
                 { 
                     title: 'Admin',
                     users,
+                    admin: true
                 })
             }
             else{
-                res.redirect('/home')
+                /* res.redirect('/home') */
+                const users = await userService.readMany()
+                res.render('adminUser', 
+                { 
+                    title: 'Users',
+                    users,
+                    admin: false
+                })
             }
         }
         else{
