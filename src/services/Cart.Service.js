@@ -1,9 +1,20 @@
 import { cartDao, productDao, ticketDao } from "../daos/index.js";
+import { Product } from "../models/Product.Mongoose.js";
 import { logger } from "../utils/logger.js";
 
 class cartService{
-    async getCart(){
-        const cart = await cartDao.readOne()
+    async getCart(cid){
+        const cart = await cartDao.readOne(cid)
+        const checkProducts = []
+        for(const product of cart.products){
+            const p = await Product.findOne({ _id: product._id })
+            if(p){
+                checkProducts.push(product)
+            }
+        }
+        cart.products = checkProducts
+        await cartDao.updateOne(cid, cart)
+        return cart
     }
     async addProduct(pid, cid, mail){
         const cart = await cartDao.readOne(cid)

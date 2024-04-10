@@ -13,7 +13,7 @@ export async function postController(req, res, next){
 export async function getController(req, res, next){
     try{
         if(req.params.cid){
-            res.json(await cartDao.readOne({ _id: req.params.cid }))
+            res.json(await cartService.getCart(req.params.cid))
         }
         else{
             res.json(await cartDao.readMany(req.query))

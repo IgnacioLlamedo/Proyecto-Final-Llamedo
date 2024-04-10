@@ -1,12 +1,12 @@
 import express from "express";
-import { Cart } from "../../models/Cart.Mongoose.js";
 import { purchaseController, purchaseControllerWeb } from "../../controllers/Cart.Controller.js";
+import { service as cartService } from "../../services/Cart.Service.js";
 
 export const cartsRouter = express.Router()
 
 cartsRouter.get('/cart', async (req, res) => {
     if(req.user){
-        const cart = (await Cart.find({ _id: req.user.cartId }))[0]
+        const cart = (await cartService.getCart(req.user.cartId))
         const products = cart.products
         res.render('cart', 
         { 
