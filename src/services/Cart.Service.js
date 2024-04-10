@@ -2,6 +2,9 @@ import { cartDao, productDao, ticketDao } from "../daos/index.js";
 import { logger } from "../utils/logger.js";
 
 class cartService{
+    async getCart(){
+        const cart = await cartDao.readOne()
+    }
     async addProduct(pid, cid, mail){
         const cart = await cartDao.readOne(cid)
         const product = await productDao.readOne(pid)

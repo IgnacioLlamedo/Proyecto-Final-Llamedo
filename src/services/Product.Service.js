@@ -8,15 +8,23 @@ class productService{
         return product
     }
     async deleteProduct(pid, mail){
+        let deleted
         const user = await userDao.readOne(mail)
         const role = user.role
         if(role === 'admin'){
-            await productDao.deleteOne({ _id: pid })
+            deleted = await productDao.deleteOne(pid)
         }
         else if(role === 'premium'){
-            const search = await productDao.readOne({ _id: pid })
+            const search = await productDao.readOne(pid)
             if(mail === search.owner){
-                await productDao.deleteOne({ _id: pid })
+                deleted = await productDao.deleteOne(pid)
+            }
+        }
+        if(deleted){
+            const product = await productDao.readOne(pid)
+            const productOwner = await userDao.readOne(product.owner)
+            if(productOwner.role === 'premium'){
+                //mandar mail al owner
             }
         }
     }

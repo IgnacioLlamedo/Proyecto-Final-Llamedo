@@ -29,6 +29,15 @@ export class userDao {
         }
         return deleted
     }
+    //vvvvvvvvvv
+    async deleteMany(query){
+        const deleted = await User.deleteMany(query).lean()
+        if(!deleted){
+            throw new AuthError()
+        }
+        return deleted
+    }
+    //^^^^^^^^^
 }
 
 

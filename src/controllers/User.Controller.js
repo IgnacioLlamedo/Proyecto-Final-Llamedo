@@ -60,6 +60,17 @@ export async function deleteController(req, res, next){
     }
 }
 
+//vvvvvvvvvv
+export async function deleteManyController(req, res, next){
+    try{
+        res.status(202).json(await userService.deleteMany())
+    }
+    catch(error){
+        next(error)
+    }
+}
+//^^^^^^^^^
+
 export async function getCurrentController(req, res, next){
     try{
         return req.user

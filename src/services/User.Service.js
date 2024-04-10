@@ -48,6 +48,11 @@ class userService{
     async deleteOne(query){
         return await userDao.deleteOne(query)
     }
+    //vvvvvvvvv
+    async deleteMany(){
+
+    }
+    //^^^^^^^^^
 }
 
 export const service = new userService()

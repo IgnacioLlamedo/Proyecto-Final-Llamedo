@@ -1,5 +1,5 @@
 import express from "express";
-import { postController, getController, getCurrentController, changeRoleController, deleteController, resetPassController } from "../../controllers/User.Controller.js";
+import { postController, getController, getCurrentController, changeRoleController, deleteController, resetPassController, deleteManyController } from "../../controllers/User.Controller.js";
 
 export const usersRouter = express.Router()
 
@@ -12,5 +12,9 @@ usersRouter.get('/current', getCurrentController)
 usersRouter.put('/', resetPassController)
 
 usersRouter.delete('/:email', deleteController)
+
+//vvvvvvvvv
+usersRouter.delete('/', deleteManyController)
+//^^^^^^^^^
 
 usersRouter.put('/role/:email/:role', changeRoleController)
