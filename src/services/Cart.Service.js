@@ -1,13 +1,13 @@
-import { cartDao, productDao, ticketDao } from "../daos/index.js";
+import { cartDao, productDao, ticketDao, userDao } from "../daos/index.js";
 import { Product } from "../models/Product.Mongoose.js";
 import { logger } from "../utils/logger.js";
 
 class cartService{
     async getCart(cid){
-        const cart = await cartDao.readOne(cid)
+        const cart = (await cartDao.populate({ _id: cid }))
         const checkProducts = []
         for(const product of cart.products){
-            const p = await Product.findOne({ _id: product._id })
+            const p = await Product.findOne({ _id: product.productID })
             if(p){
                 checkProducts.push(product)
             }
@@ -19,7 +19,8 @@ class cartService{
     async addProduct(pid, cid, mail){
         const cart = await cartDao.readOne(cid)
         const product = await productDao.readOne(pid)
-        if(product.owner !== mail){
+        const owner = await userDao.readOne(mail)
+        if((owner.email !== mail) || (owner.role !== 'premium')){
             if(cart.products.length === 0){
                 cart.products.push({
                     productID: pid,
@@ -82,7 +83,7 @@ class cartService{
             purchaser: mail
         }
         ticketData.amount = 0
-        let cart = (await cartDao.populate({ _id: cid }))[0]
+        let cart = await this.getCart(cid)
         for (const product of cart.products){
             if(product.quantity > product.productID.stock){
                 array.push(product)

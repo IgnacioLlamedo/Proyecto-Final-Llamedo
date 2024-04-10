@@ -12,5 +12,6 @@ export default {
     ghClId:process.env.githubClientId,
     ghClSec:process.env.githubClientSecret,
     ghCBUrl:process.env.githubCallbackUrl,
-    stripeConfig:process.env.STRIPE_KEY
+    mailUser:process.env.EMAIL_USER,
+    mailPass:process.env.EMAIL_PASS
 }

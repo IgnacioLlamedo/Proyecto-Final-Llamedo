@@ -6,7 +6,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon -e js,handlebars,yaml,css src/app.js"
+    "dev": "nodemon -e js,handlebars,yaml,css src/app.js --env-file='.env' ."
   },
   "keywords": [],
   "author": "",

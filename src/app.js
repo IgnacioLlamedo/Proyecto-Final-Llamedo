@@ -53,10 +53,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 /* 
-    Ruta para borrar todos los usuarios que no tengan sesion reciente (users router, user controller, user service, user dao)
-    Mandar mail:
-        - Al finalizar la compra, mandarle el ticket al comprador
-        - Al borrar un producto cuyo owner sea premium, mandarle al owner el producto eliminado
+    Ruta para borrar todos los usuarios que no tengan sesion reciente (api/users router, user controller, user service, user dao)
 */
 
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */

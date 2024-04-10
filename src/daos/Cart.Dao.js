@@ -38,7 +38,7 @@ export class cartDao {
         if(!cart){
             throw new NotFoundError('Cart')
         }
-        return cart
+        return cart[0]
     }
 }
 

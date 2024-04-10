@@ -6,7 +6,7 @@ export const cartsRouter = express.Router()
 
 cartsRouter.get('/cart', async (req, res) => {
     if(req.user){
-        const cart = (await cartService.getCart(req.user.cartId))
+        const cart = await cartService.getCart(req.user.cartId)
         const products = cart.products
         res.render('cart', 
         { 

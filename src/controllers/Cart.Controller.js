@@ -1,5 +1,6 @@
 import { cartDao } from "../daos/index.js"
 import { service as cartService } from "../services/Cart.Service.js"
+import { service as mailService } from "../services/Mail.Service.js"
 
 export async function postController(req, res, next){
     try{
@@ -66,20 +67,6 @@ export async function deleteProductController(req, res, next){
     }
 }
 
-export async function populateController(req, res, next){
-    try{
-        if(req.params.cid){
-            res.json(await cartDao.populate({ _id: req.params.cid }))
-        }
-        else{
-            res.json(await cartDao.populate({ _id: req.user.cartId }))
-        }
-    }
-    catch(error){
-        next(error)
-    }
-}
-
 export async function purchaseController(req, res, next){
     try{
         if(req.params.cid){
@@ -97,23 +84,19 @@ export async function purchaseController(req, res, next){
 export async function purchaseControllerWeb(req, res, next){
     try{
         if(req.user){
-            if(req.user.role === 'admin'){
-                const ticket = await cartService.purchase(req.user.cartId, req.user.email)
-                const cart = await cartDao.readOne(req.user.cartId)
-                if (ticket){
-                    res.render('purchase',
-                    {   
-                        title: 'Purchase Ticket',
-                        warning: cart.products.length > 0,
-                        ticket
-                    })
-                }
-                else{
-                    res.redirect('/purchase/error')
-                }
+            const ticket = await cartService.purchase(req.user.cartId, req.user.email)
+            const cart = await cartDao.readOne(req.user.cartId)
+            if (ticket){
+                await mailService.purhcaseMail(ticket)
+                res.render('purchase',
+                {   
+                    title: 'Purchase Ticket',
+                    warning: cart.products.length > 0,
+                    ticket
+                })
             }
             else{
-                res.redirect('/home')
+                res.redirect('/purchase/error')
             }
         }
         else{
