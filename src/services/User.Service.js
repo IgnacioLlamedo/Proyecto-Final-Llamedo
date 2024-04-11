@@ -48,11 +48,18 @@ class userService{
     async deleteOne(query){
         return await userDao.deleteOne(query)
     }
-    //vvvvvvvvv
     async deleteMany(){
-
+        //console.log(new Date(user.lastConnection - 200000000))
+        const day = 24 * 60 * 60 * 1000
+        const date = Date.now()
+        const deleted = await userDao.deleteMany({
+            lastConnection: { $lte: (date - (day * 2)) },
+            role: { $in: ['user', 'premium'] }
+        })
+        if(deleted){
+            return deleted
+        }
     }
-    //^^^^^^^^^
 }
 
 export const service = new userService()

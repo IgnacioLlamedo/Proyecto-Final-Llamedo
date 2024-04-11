@@ -9,7 +9,8 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     username: { type: String, required: true },
     role: { type: String, enum: ['user', 'admin', 'premium'], default: 'user' },
-    cartId: { type: String, default: randomUUID }
+    cartId: { type: String, default: randomUUID },
+    lastConnection: { type: Date, default: Date.now() }
 }, {
     strict: 'throw',
     versionKey: false,

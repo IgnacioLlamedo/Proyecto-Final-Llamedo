@@ -29,7 +29,6 @@ export class userDao {
         }
         return deleted
     }
-    //vvvvvvvvvv
     async deleteMany(query){
         const deleted = await User.deleteMany(query).lean()
         if(!deleted){
@@ -37,7 +36,6 @@ export class userDao {
         }
         return deleted
     }
-    //^^^^^^^^^
 }
 
 

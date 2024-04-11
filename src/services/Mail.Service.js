@@ -38,7 +38,7 @@ class mailService{
     }
     async productDeletedMail(product){
         const body = `
-        <h1>Product Deleted</h1>
+        <h1>One of Your Products Has Been Deleted</h1>
         <ul>
             <p>Product "${product.title}"</p>
             <img src="cid:product">

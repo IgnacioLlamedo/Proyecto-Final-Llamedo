@@ -52,10 +52,6 @@ const swaggerOptions = {
 const specs = swaggerJSDoc(swaggerOptions)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
-/* 
-    Ruta para borrar todos los usuarios que no tengan sesion reciente (api/users router, user controller, user service, user dao)
-*/
-
 /* client secret: 2ac002f55b88da802c13cefc9c2cff41d403acd1 */
 
 /* 

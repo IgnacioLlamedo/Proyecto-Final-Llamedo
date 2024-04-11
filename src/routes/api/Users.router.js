@@ -13,8 +13,6 @@ usersRouter.put('/', resetPassController)
 
 usersRouter.delete('/:email', deleteController)
 
-//vvvvvvvvv
 usersRouter.delete('/', deleteManyController)
-//^^^^^^^^^
 
 usersRouter.put('/role/:email/:role', changeRoleController)

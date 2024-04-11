@@ -60,7 +60,9 @@ passport.use('login', new LocalStrategy({
 }, async (email, password, done) => {
   try{
     const userData = await userService.readOne(email, password)
-    done(null, userData)
+    userData.lastConnection = Date.now()
+    const user = await userDao.updateOne(email, userData)
+    done(null, user)
   }
   catch(error){
     done(error)
